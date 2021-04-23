@@ -27,5 +27,7 @@ typedef struct	s_info
 
 //void	set_map_info(t_info *map_information);
 int	parse_cub(char *source_line, t_info *map_information);
+int	check_structure(t_info *map_information);
+void	reset_map_information(t_info *map_information);
 
 #endif

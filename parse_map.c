@@ -15,6 +15,40 @@
 	map_information->path_to_the_sprite_texture = "./textures/sprite.xml";
 }*/
 
+int	check_structure(t_info *map_information)
+{
+	int	count;
+
+	count = 0;
+	if (map_information->x_render_size)
+		count++;
+	if (map_information->y_render_size)
+		count++;
+	if (map_information->f_red >= 0)
+		count++;
+	if (map_information->f_green >= 0)
+		count++;
+	if (map_information->f_blue >= 0)
+		count++;
+	if (map_information->c_red >= 0)
+		count++;
+	if (map_information->c_green >= 0)
+		count++;
+	if (map_information->c_blue >= 0)
+		count++;
+	if (map_information->path_to_the_north_texture)
+		count++;
+	if (map_information->path_to_the_south_texture)
+		count++;
+	if (map_information->path_to_the_west_texture)
+		count++;
+	if (map_information->path_to_the_east_texture)
+		count++;
+	if (map_information->path_to_the_sprite_texture)
+		count++;
+	return (count);
+}
+
 static int	compare_text(char *source_line, char *text)
 {
 	while (*source_line || *text)
@@ -58,7 +92,7 @@ int	parse_cub(char *source_line, t_info *map_information)
 	temp = ft_split(source_line, ' ');
 	while (temp[count])
 		count++;
-	if (**temp == 'R')
+	if (compare_text(temp[0], "R"))
 	{
 		map_information->x_render_size = cub_atoi(temp[1]);
 		map_information->y_render_size = cub_atoi(temp[2]);
@@ -107,5 +141,5 @@ int	parse_cub(char *source_line, t_info *map_information)
 		free_by_count(color_temp, 3);
 		free_by_count(temp, count);
 	}
-		return (1);
+	return (1);
 }
