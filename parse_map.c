@@ -143,3 +143,54 @@ int	parse_cub(char *source_line, t_info *map_information)
 	}
 	return (1);
 }
+
+int	start_parsing(t_info *map_information, char **map)
+{
+	t_list	*head;
+	t_list	*now;
+	char	*source_line;
+	int		fd;
+	int		y_map_size;
+	int		x_map_size;
+	int		map_index;
+	int		check_count;
+
+	printf("here\n");
+	map_index = 0;
+	y_map_size = 0;
+	x_map_size = 0;
+	check_count = 0;
+	fd = open("./conf.cub", O_RDONLY);
+	map_information = malloc(sizeof(t_info));
+	reset_map_information(map_information);
+
+	while (check_count != 13)
+	{
+		check_count = check_structure(map_information);
+		get_next_line(fd, &source_line);
+		if (*source_line != '\0')
+			parse_cub(source_line, map_information);
+	}
+	head = ft_lstnew(NULL);
+	while (get_next_line(fd, &source_line) == 1)
+	{
+		now = ft_lstnew((void *)source_line);
+		if ((int)ft_strlen(now->content) > x_map_size)
+			x_map_size = ft_strlen(now->content);
+		y_map_size++;
+		ft_lstadd_back(&head, now);
+	}
+	map = (char **)malloc(sizeof(char *) * (y_map_size + 1));
+	now = head->next;
+	while (now->next)
+	{
+		map[map_index] = ft_strdup((char *)now->content);
+		printf("%s\n", map[map_index]);
+		now = now->next;
+		map_index++;
+	}
+	printf("x_map_size : %d\n", x_map_size);
+	printf("y_map_size : %d\n", y_map_size);
+
+	return (0);
+}

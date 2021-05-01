@@ -1,0 +1,15 @@
+R 1920 1080
+NO ../srcs/North.xml
+SO ../srcs/South.xml
+WE ../srcs/West.xml
+EA ../srcs/East.xml
+ST ../srcs/Sky_Texture.xml
+FT ../srcs/Floor_Texture.xml
+F 255,0,0
+C 0,255,0,0
+
+111111111
+100000001
+100000001
+100011111
+11111

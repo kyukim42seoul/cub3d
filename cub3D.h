@@ -5,8 +5,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "../Get_Next_Line/get_next_line.h"
-#include "../Libft/libft.h"
+#include "./Get_Next_Line/get_next_line.h"
+#include "./Libft/libft.h"
+#include "./mlx/mlx.h"
+
+typedef struct dda_info
+{
+	int	*position;
+	int	*direction;
+	int	*plane;
+}	tdda_info;
 
 typedef struct	s_info
 {
@@ -29,5 +37,7 @@ typedef struct	s_info
 int	parse_cub(char *source_line, t_info *map_information);
 int	check_structure(t_info *map_information);
 void	reset_map_information(t_info *map_information);
+void	print_structure(t_info *map_information);
+int	start_parsing(t_info *map_information, char **map);
 
 #endif
