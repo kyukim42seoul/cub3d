@@ -1,0 +1,19 @@
+R 1920 1080
+NO ../srcs/images/ft_textures/wall_n.xmp
+SO ../srcs/images/ft_textures/wall_s.xmp
+WE ../srcs/images/ft_textures/wall_w.xmp
+EA ../srcs/images/ft_textures/wall_e.xmp
+ST ../srcs/images/origin_textures/sky_1.xmp
+FT ../srcs/images/origin_textures/floor_1.xmp
+S ../srcs/images/origin_textures/sprite_1.xmp
+F 255,0,0
+C 0,255,0,0
+
+111111111
+100000001
+100N00001
+100011111
+11111
+
+
+
