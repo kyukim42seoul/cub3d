@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "srcs/Get_Next_Line/get_next_line.h"
-#include "srcs/libft/libft.h"
-#include "srcs/mlx/mlx.h"
+#include "Get_Next_Line/get_next_line.h"
+#include "libft/libft.h"
+#include "mlx/mlx.h"
 
 typedef struct vector
 {
@@ -47,5 +47,8 @@ typedef struct graphic_info
 int	parse_cub(char *source_line,g_info *graphic_info);
 int	check_structure(g_info *graphic_info);
 void	reset_graphic_info(g_info *graphic_info);
+void	start_parsing(int fd, char ***map, g_info *graphic_info);
+void	parse_map(int fd, char ***map);
+int	dda(char **map, tdda_info *v);
 
 #endif

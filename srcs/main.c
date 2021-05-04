@@ -16,6 +16,19 @@ static void	print_structure(g_info *graphic_info)
 	printf("c_green : %d\n", graphic_info->c_green);
 	printf("c_blue : %d\n", graphic_info->c_blue);
 }
+
+static void	print_map(char **map)
+{
+	int	index;
+
+	index = 0;
+	while (map[index])
+	{
+		printf("%s\n", map[index]);
+		index++;
+	}
+}
+
 static void	set_structures(g_info **graphic_info, tdda_info **vector)
 {
 	*graphic_info = malloc(sizeof(g_info));
@@ -28,61 +41,25 @@ static void	set_structures(g_info **graphic_info, tdda_info **vector)
 	(*vector)->deltaDist = malloc(sizeof(v_info));
 }
 
-int	main(/*int argc, char *argv[]*/)
+int	main(int argc, char *argv[])
 {
-	g_info	*graphic_info;
-	t_list	*head;
-	t_list	*now;
+	g_info		*graphic;
 	tdda_info	*vectors;
-	char	**map;
-	void	*mlx_pointer;
-	void	*mlx_window;
-	int		fd;
-	char	*source_line;
-	int		y_map_size;
-	int		x_map_size;
-	int		map_index;
-	int		check_count;
-	int		x;
-	int		y;
+	char		**map;
+	void		*mlx_pointer;
+	void		*mlx_window;
+	int			fd;
 
-	x = 0;
-	y = 0;
 	map = 0;
-	map_index = 0;
-	y_map_size = 0;
-	x_map_size = 0;
-	check_count = 0;
-	fd = open("./conf.cub", O_RDONLY);
-	set_structures(&graphic_info, &vectors);
-	reset_graphic_info(graphic_info);
-	while (check_count != 13)
-	{
-		check_count = check_structure(graphic_info);
-		get_next_line(fd, &source_line);
-		if (*source_line != '\0')
-			parse_cub(source_line, graphic_info);
-	}
-	print_structure(graphic_info);
-	head = ft_lstnew(NULL);
-	while (get_next_line(fd, &source_line) == 1)
-	{
-		now = ft_lstnew((void *)source_line);
-		if ((int)ft_strlen(now->content) > x_map_size)
-			x_map_size = ft_strlen(now->content);
-		y_map_size++;
-		ft_lstadd_back(&head, now);
-	}
-	map = (char **)malloc(sizeof(char *) * (y_map_size + 1));
-	now = head->next;
-	while (now->next)
-	{
-		map[map_index] = ft_strdup((char *)now->content);
-		printf("%s\n", map[map_index]);
-		now = now->next;
-		map_index++;
-	}
-
+	if (argc != 2)
+		return (0);
+	fd = open(argv[1], O_RDONLY);
+	printf("here!\n");
+	set_structures(&graphic, &vectors);
+	reset_graphic_info(graphic);
+	start_parsing(fd, &map, graphic);
+	print_structure(graphic);
+	print_map(map);
 	mlx_pointer = mlx_init();
 	mlx_window = mlx_new_window(mlx_pointer, 1920, 1080, "cub3D");
 

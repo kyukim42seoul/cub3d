@@ -6,9 +6,11 @@ GNL = srcs/Get_Next_Line/gnl.a
 LIBFT = srcs/libft/libft.a
 FRAMEWORKS = -framework OpenGl -framework AppKit
 
-OBJECTS =	cub_util.o \
-	parse_graphic.o \
-	main.o \
+OBJECTS =	srcs/cub_util.o \
+	srcs/parse_graphic.o \
+	srcs/parse_map.o \
+	srcs/main.o \
+	srcs/start_parsing.o \
 
 all : gnl libft mlx $(NAME)
 
@@ -20,7 +22,6 @@ libft :
 
 mlx :
 	cd srcs/mlx; $(MAKE)
-
 
 $(NAME) : $(OBJECTS)
 	$(CC) -o $(NAME) $(CFLAGS) $(MLX) $(GNL) $(LIBFT) $(FRAMEWORKS) $(OBJECTS)

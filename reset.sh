@@ -7,5 +7,3 @@ cd ../Get_Next_Line
 rm *.o *.a
 cd ../mlx
 rm *.o libmlx.dylib
-cd ../..
-make
