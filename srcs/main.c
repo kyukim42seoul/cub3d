@@ -29,22 +29,22 @@ static void	print_map(char **map)
 	}
 }
 
-static void	set_structures(g_info **graphic_info, tdda_info **vector)
+static void	set_info(t_hub **info)
 {
-	*graphic_info = malloc(sizeof(g_info));
-	*vector = malloc(sizeof(tdda_info));
-	(*vector)->pos = malloc(sizeof(v_info));
-	(*vector)->dir = malloc(sizeof(v_info));
-	(*vector)->rayDir = malloc(sizeof(v_info));
-	(*vector)->plane = malloc(sizeof(v_info));
-	(*vector)->sideDist = malloc(sizeof(v_info));
-	(*vector)->deltaDist = malloc(sizeof(v_info));
+	*info = malloc(sizeof(t_hub));
+	(*info)->graphic = malloc(sizeof(g_info));
+	(*info)->vector = malloc(sizeof(tdda_info));
+	(*info)->vector->pos = malloc(sizeof(v_info));
+	(*info)->vector->dir = malloc(sizeof(v_info));
+	(*info)->vector->rayDir = malloc(sizeof(v_info));
+	(*info)->vector->plane = malloc(sizeof(v_info));
+	(*info)->vector->sideDist = malloc(sizeof(v_info));
+	(*info)->vector->deltaDist = malloc(sizeof(v_info));
 }
 
 int	main(int argc, char *argv[])
 {
-	g_info		*graphic;
-	tdda_info	*vectors;
+	t_hub		*info;
 	char		**map;
 	void		*mlx_pointer;
 	void		*mlx_window;
@@ -54,12 +54,16 @@ int	main(int argc, char *argv[])
 	if (argc != 2)
 		return (0);
 	fd = open(argv[1], O_RDONLY);
-	printf("here!\n");
-	set_structures(&graphic, &vectors);
-	reset_graphic_info(graphic);
-	start_parsing(fd, &map, graphic);
-	print_structure(graphic);
-	print_map(map);
+	set_info(&info);
+	reset_info(info);
+	start_parsing(fd, &map, info);
+	if (info->error == 0)
+	{
+		print_structure(info->graphic);
+		print_map(map);
+	}
+	else
+		printf("%s\n", info->error_message);
 	mlx_pointer = mlx_init();
 	mlx_window = mlx_new_window(mlx_pointer, 1920, 1080, "cub3D");
 

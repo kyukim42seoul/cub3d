@@ -44,11 +44,19 @@ typedef struct graphic_info
 	int	c_blue;
 }	g_info;
 
-int	parse_cub(char *source_line,g_info *graphic_info);
-int	check_structure(g_info *graphic_info);
-void	reset_graphic_info(g_info *graphic_info);
-void	start_parsing(int fd, char ***map, g_info *graphic_info);
-void	parse_map(int fd, char ***map);
-int	dda(char **map, tdda_info *v);
+typedef struct info_hub
+{
+	g_info	*graphic;
+	tdda_info	*vector;
+	int	error;
+	char	*error_message;
+}	t_hub;
+
+int	parse_cub(char *source_line, g_info *graphic);
+int	check_structure(g_info *graphic);
+void	reset_info(t_hub *info);
+void	start_parsing(int fd, char ***map, t_hub *info);
+void	parse_map(int fd, char ***map, t_hub *info);
+int	dda(char **map, t_hub *info);
 
 #endif
