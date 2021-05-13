@@ -9,23 +9,15 @@
 #include "libft/libft.h"
 #include "mlx/mlx.h"
 
-typedef struct vector
-{
-	double x;
-	double y;
-}	v_info;
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
 
-typedef struct dda_info
-{
-	v_info	*pos;
-	v_info	*dir;
-	v_info	*rayDir;
-	v_info	*plane;
-	v_info	*sideDist;
-	v_info	*deltaDist;
-//	double	*cameraX;
-//	double	*perpWall;
-}	tdda_info;
+# define KEY_ESC 53
+
+# define X_EVENT_KEY_PRESS 2
+# define X_EVENT_KEY_EXIT 17
 
 typedef struct graphic_info
 {
@@ -44,19 +36,45 @@ typedef struct graphic_info
 	int	c_blue;
 }	g_info;
 
+typedef struct s_data
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}	t_data;
+
 typedef struct info_hub
 {
 	g_info	*graphic;
-	tdda_info	*vector;
+	t_data	image;
+	double	posX;
+	double	posY;
+	double	dirX;
+	double	dirY;
+	double	planeX;
+	double	planeY;
+	double	moveSpeed;
+	double	rotationSpeed;
 	int	error;
 	char	*error_message;
+	void	*mlx;
+	void	*win;
+	int		screenwide;
+	int		screenheight;
+	char	**map;
 }	t_hub;
+
 
 int	parse_cub(char *source_line, g_info *graphic);
 int	check_structure(g_info *graphic);
 void	reset_info(t_hub *info);
 void	start_parsing(int fd, char ***map, t_hub *info);
 void	parse_map(int fd, char ***map, t_hub *info);
-int	dda(char **map, t_hub *info);
+int	dda(t_hub *info);
+int	key_press(int key, t_hub *info);
+void	print_structure(t_hub *info);
+void	print_graphic(g_info *graphic_info);
 
 #endif

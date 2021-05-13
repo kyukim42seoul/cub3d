@@ -7,13 +7,10 @@ ST ../srcs/images/origin_textures/sky_1.xmp
 FT ../srcs/images/origin_textures/floor_1.xmp
 S ../srcs/images/origin_textures/sprite_1.xmp
 F 255,0,0
-C 0,255,0,0
+C 0,255,0
 
 111111111
 100000001
-100N00001
+100W00001
 100011111
 11111
-
-
-

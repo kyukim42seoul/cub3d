@@ -11,6 +11,7 @@ OBJECTS =	srcs/cub_util.o \
 	srcs/parse_map.o \
 	srcs/main.o \
 	srcs/start_parsing.o \
+	srcs/dda.o \
 
 all : gnl libft mlx $(NAME)
 

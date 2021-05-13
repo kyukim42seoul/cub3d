@@ -7,34 +7,36 @@ static int	find_character(int map_y, char *line, t_hub *info)
 	count = 0;
 	if (ft_strchr(line, 'N'))
 	{
-		info->vector->pos->x = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'N')));
-		info->vector->pos->y = (double)map_y;
-		info->vector->dir->x = 0;
-		info->vector->dir->y = 1;
+		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'N')) + 0.5);
+		info->posY = (double)map_y + 0.5;
+		info->dirX = 0;
+		info->dirY = 1;
 		count++;
 	}
 	else if (ft_strchr(line,'S'))
 	{
-		info->vector->pos->x = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'S')));
-		info->vector->pos->y = (double)map_y;
-		info->vector->dir->x = 0;
-		info->vector->dir->y = -1;
+		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'S')) + 0.5);
+		info->posY = (double)map_y + 0.5;
+		info->dirX = 0;
+		info->dirY = -1;
 		count++;
 	}
 	else if (ft_strchr(line, 'W'))
 	{
-		info->vector->pos->x = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'W')));
-		info->vector->pos->y = (double)map_y;
-		info->vector->dir->x = -1;
-		info->vector->dir->y = 0;
+		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'W')) + 0.5);
+		info->posY = (double)map_y + 0.5;
+		info->dirX = -1;
+		info->dirY = 0;
+		info->planeX = 0;
+		info->planeY = 0.66;
 		count++;
 	}
 	else if (ft_strchr(line, 'E'))
 	{
-		info->vector->pos->x = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'E')));
-		info->vector->pos->y = (double)map_y;
-		info->vector->dir->x = 1;
-		info->vector->dir->y = 0;
+		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'E')) + 0.5);
+		info->posY = (double)map_y + 0.5;
+		info->dirX = 1;
+		info->dirY = 0;
 		count++;
 	}
 	if (count > 1)
@@ -86,6 +88,7 @@ void	parse_map(int fd, char ***map, t_hub *info)
 				info->error++;
 			}
 		}
+		printf("checking line : %s\n", line);
 		count += find_character(map_y, line, info);
 		current = ft_lstnew((void *)line);
 		if ((int)ft_strlen(current->content) > map_x)
