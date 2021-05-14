@@ -28,6 +28,8 @@ typedef struct s_gdata
 	char	*path_to_the_west_texture;
 	char	*path_to_the_east_texture;
 	char	*path_to_the_sprite_texture;
+	char	*path_to_the_sky_texture;
+	char	*path_to_the_floor_texture;
 	int	f_red;
 	int	f_green;
 	int	f_blue;

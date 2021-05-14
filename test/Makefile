@@ -7,6 +7,10 @@ LIBFT = srcs/libft/libft.a
 FRAMEWORKS = -framework OpenGl -framework AppKit
 
 OBJECTS =	test_main.o \
+	srcs/parse_graphic.o \
+	srcs/parse_map.o \
+	srcs/start_parsing.o \
+	srcs/cub_util.o \
 
 all : gnl libft mlx $(NAME)
 

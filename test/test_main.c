@@ -1,5 +1,5 @@
 #include "test_cub3D.h"
-
+/*
 static int	set_dest_color(t_img *img, int x, int y, int color)
 {
 	char	*dest;
@@ -43,5 +43,43 @@ int	main()
 	printf("%d %d %d\n", y, x, cnt);
 	mlx_put_image_to_window(mlx, win, img.img, 0, 0);
 	mlx_loop(mlx);
+	return (0);
+}
+*/
+
+static void	free_structure(t_hub *info)
+{
+	int	index;
+
+	index = 0;
+	free(info->graphic->path_to_the_north_texture);
+	free(info->graphic->path_to_the_south_texture);
+	free(info->graphic->path_to_the_west_texture);
+	free(info->graphic->path_to_the_east_texture);
+	free(info->graphic->path_to_the_sky_texture);
+	free(info->graphic->path_to_the_floor_texture);
+	free(info->graphic->path_to_the_sprite_texture);
+
+	while (info->map[index])
+	{
+		printf("%s\n", info->map[index]);
+		free(info->map[index]);
+		index++;
+	}
+	free(info->graphic);
+}
+int	main(int argc, char *argv[])
+{
+	t_hub		info;
+	int			fd;
+
+	if (argc != 2)
+		return (0);
+	fd = open(argv[1], O_RDONLY);
+	info.graphic = malloc(sizeof(t_gdata));
+	reset_info(&info);  //ok
+	start_parsing(fd, &info.map, &info);
+	free_structure(&info);
+	while (1);
 	return (0);
 }

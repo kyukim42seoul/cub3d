@@ -1,5 +1,5 @@
 #include "cub3D.h"
-
+/*
 static void	print_map(char **map)
 {
 	int	index;
@@ -11,12 +11,32 @@ static void	print_map(char **map)
 		index++;
 	}
 }
+*/
+
+static void	free_structure(t_hub *info)
+{
+	int	index;
+
+	index = 0;
+	free(info->graphic->path_to_the_north_texture);
+	free(info->graphic->path_to_the_south_texture);
+	free(info->graphic->path_to_the_west_texture);
+	free(info->graphic->path_to_the_east_texture);
+	while (info->map[index])
+	{
+		free(info->map[index]);
+		index++;
+	}
+	free(info->graphic);
+}
 
 int	main(int argc, char *argv[])
 {
 	t_hub		info;
 	int			fd;
+	int			index;
 
+	index = 0;
 	info.map = 0;
 	if (argc != 2)
 		return (0);
@@ -27,7 +47,7 @@ int	main(int argc, char *argv[])
 	if (info.error == 0)
 	{
 		print_structure(&info);
-		print_map(info.map);
+//		print_map(info.map);
 	}
 	else
 		printf("%s\n", info.error_message);
@@ -39,5 +59,6 @@ int	main(int argc, char *argv[])
 	mlx_loop_hook(info.mlx, &dda, &info);
 	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
 	mlx_loop(info.mlx);
+	free_structure(&info);
 	return (0);
 }

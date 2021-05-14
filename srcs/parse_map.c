@@ -3,16 +3,20 @@
 static int	find_character(int map_y, char *line, t_hub *info)
 {
 	static int	count;
+//	char	*temp;
 
 	count = 0;
+//	temp = 0;
 	if (ft_strchr(line, 'N'))
 	{
 		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'N')) + 0.5);
 		info->posY = (double)map_y + 0.5;
 		info->dirX = 0;
-		info->dirY = 1;
+		info->dirY = -1;
 		info->planeX = 0.66;
 		info->planeY = 0;
+//		temp = ft_strchr(line, 'N');
+//		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line,'S'))
@@ -20,9 +24,11 @@ static int	find_character(int map_y, char *line, t_hub *info)
 		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'S')) + 0.5);
 		info->posY = (double)map_y + 0.5;
 		info->dirX = 0;
-		info->dirY = -1;
+		info->dirY = 1;
 		info->planeX = -0.66;
 		info->planeY = 0;
+//		temp = ft_strchr(line, 'S');
+//		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line, 'W'))
@@ -32,7 +38,9 @@ static int	find_character(int map_y, char *line, t_hub *info)
 		info->dirX = -1;
 		info->dirY = 0;
 		info->planeX = 0;
-		info->planeY = 0.66;
+		info->planeY = -0.66;
+//		temp = ft_strchr(line, 'W');
+//		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line, 'E'))
@@ -42,7 +50,9 @@ static int	find_character(int map_y, char *line, t_hub *info)
 		info->dirX = 1;
 		info->dirY = 0;
 		info->planeX = 0;
-		info->planeY = -0.66;
+		info->planeY = 0.66;
+//		temp = ft_strchr(line, 'E');
+//		*temp = '0';
 		count++;
 	}
 	if (count > 1)
@@ -75,8 +85,10 @@ void	parse_map(int fd, char ***map, t_hub *info)
 	int	index;
 	int	count;
 	char	*line;
+	char	*temp;
 	t_list	*head;
 	t_list	*current;
+	t_list	*old;
 
 	map_x = 0;
 	map_y = 0;
@@ -94,13 +106,14 @@ void	parse_map(int fd, char ***map, t_hub *info)
 				info->error++;
 			}
 		}
-		printf("checking line : %s\n", line);
+		temp = ft_strdup(line);
 		count += find_character(map_y, line, info);
-		current = ft_lstnew((void *)line);
+		current = ft_lstnew((void *)temp);
 		if ((int)ft_strlen(current->content) > map_x)
 			map_x = ft_strlen(current->content);
 		map_y++;
 		ft_lstadd_back(&head, current);
+		free(line);
 	}
 	if (count != 1)
 	{
@@ -112,12 +125,16 @@ void	parse_map(int fd, char ***map, t_hub *info)
 	{
 		*map = (char **)malloc(sizeof(char *) * (map_y + 1));
 		current = head->next;
+		free(head);
 		while (current->next)
 		{
 			(*map)[index] = ft_strdup((char *)current->content);
+			old = current;
 			current = current->next;
+			free(old);
 			index++;
 		}
+		(*map)[index] = NULL;
 	}
 }
 
