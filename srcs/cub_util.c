@@ -1,5 +1,39 @@
 #include "cub3D.h"
 
+void	set_pixel_color(t_hub *info, int x, int y, int color)
+{
+	char	*dst;
+
+	dst = info->image.addr + (y * info->image.line_length + x * (info->image.bits_per_pixel / 8));
+
+	*(unsigned int *)dst = color;
+}
+
+void	verline (t_hub *info, int x, int y1, int y2, int color)
+{
+	int	y;
+	int	eyesight;
+
+	eyesight = info->screenheight / 2;
+	y = 0;
+	while (y < eyesight)
+	{
+		set_pixel_color(info, x, y, 0x006699FF);
+		y++;
+	}
+	while (y < info->screenheight)
+	{
+		set_pixel_color(info, x, y, 0x00996600);
+		y++;
+
+	}
+	while (y1 < y2)
+	{
+		set_pixel_color(info, x, y1, color);
+		y1++;
+	}
+}
+
 void	reset_info(t_hub *info)
 {
 	info->error = 0;
@@ -30,6 +64,23 @@ void	reset_info(t_hub *info)
 	info->image.img = 0;
 	info->screenwide = 0;
 	info->screenheight = 0;
+}
+
+void	print_graphic(t_gdata *graphic_info)
+{
+	printf("graphic_info->x_render_size : %d\n", graphic_info->x_render_size);
+	printf("graphic_info->y_render_size : %d\n", graphic_info->y_render_size);
+	printf("graphic_info->f_red : %d\n", graphic_info->f_red);
+	printf("graphic_info->f_green : %d\n", graphic_info->f_green);
+	printf("graphic_info->f_blue : %d\n", graphic_info->f_blue);
+	printf("graphic_info->c_red : %d\n", graphic_info->c_red);
+	printf("graphic_info->c_green : %d\n", graphic_info->c_green);
+	printf("graphic_info->c_blue : %d\n", graphic_info->c_blue);
+	printf("graphic_info->path_to_the_north_texture : %s\n", graphic_info->path_to_the_north_texture);
+	printf("graphic_info->path_to_the_south_texture : %s\n", graphic_info->path_to_the_south_texture);
+	printf("graphic_info->path_to_the_west_texture : %s\n", graphic_info->path_to_the_west_texture);
+	printf("graphic_info->path_to_the_east_texture : %s\n", graphic_info->path_to_the_east_texture);
+	printf("graphic_info->path_to_the_sprite_texture : %s\n", graphic_info->path_to_the_sprite_texture);
 }
 
 void	print_structure(t_hub *info)

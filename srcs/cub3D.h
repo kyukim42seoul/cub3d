@@ -19,7 +19,7 @@
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_EXIT 17
 
-typedef struct graphic_info
+typedef struct s_gdata
 {
 	int	x_render_size;
 	int	y_render_size;
@@ -34,21 +34,21 @@ typedef struct graphic_info
 	int	c_red;
 	int	c_green;
 	int	c_blue;
-}	g_info;
+}	t_gdata;
 
-typedef struct s_data
+typedef struct s_idata
 {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-}	t_data;
+}	t_idata;
 
 typedef struct info_hub
 {
-	g_info	*graphic;
-	t_data	image;
+	t_gdata	*graphic;
+	t_idata	image;
 	double	posX;
 	double	posY;
 	double	dirX;
@@ -66,15 +66,27 @@ typedef struct info_hub
 	char	**map;
 }	t_hub;
 
-
-int	parse_cub(char *source_line, g_info *graphic);
-int	check_structure(g_info *graphic);
+//cub_util.c
 void	reset_info(t_hub *info);
-void	start_parsing(int fd, char ***map, t_hub *info);
-void	parse_map(int fd, char ***map, t_hub *info);
+void	print_structure(t_hub *info);
+void	print_graphic(t_gdata *graphic_info);
+void	verline (t_hub *info, int x, int y1, int y2, int color);
+void	set_pixel_color(t_hub *info, int x, int y, int color);
+
+//dda.c + 2 static verline, addr_pixel_put
 int	dda(t_hub *info);
 int	key_press(int key, t_hub *info);
-void	print_structure(t_hub *info);
-void	print_graphic(g_info *graphic_info);
+
+//main.c + main + 1 static print_map
+
+//parse_graphic.c + 3 static compare_text, free_by_count, cub_atoi
+int	check_structure(t_gdata *graphic);
+int	parse_cub(char *source_line, t_gdata *graphic);
+
+//parse_map.c + 2 static find_character, check_map_start
+void	parse_map(int fd, char ***map, t_hub *info);
+
+//start_parsing.c
+void	start_parsing(int fd, char ***map, t_hub *info);
 
 #endif

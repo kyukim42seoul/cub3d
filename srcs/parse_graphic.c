@@ -1,23 +1,6 @@
 #include "cub3D.h"
 
-void	print_graphic(g_info *graphic_info)
-{
-	printf("graphic_info->x_render_size : %d\n", graphic_info->x_render_size);
-	printf("graphic_info->y_render_size : %d\n", graphic_info->y_render_size);
-	printf("graphic_info->f_red : %d\n", graphic_info->f_red);
-	printf("graphic_info->f_green : %d\n", graphic_info->f_green);
-	printf("graphic_info->f_blue : %d\n", graphic_info->f_blue);
-	printf("graphic_info->c_red : %d\n", graphic_info->c_red);
-	printf("graphic_info->c_green : %d\n", graphic_info->c_green);
-	printf("graphic_info->c_blue : %d\n", graphic_info->c_blue);
-	printf("graphic_info->path_to_the_north_texture : %s\n", graphic_info->path_to_the_north_texture);
-	printf("graphic_info->path_to_the_south_texture : %s\n", graphic_info->path_to_the_south_texture);
-	printf("graphic_info->path_to_the_west_texture : %s\n", graphic_info->path_to_the_west_texture);
-	printf("graphic_info->path_to_the_east_texture : %s\n", graphic_info->path_to_the_east_texture);
-	printf("graphic_info->path_to_the_sprite_texture : %s\n", graphic_info->path_to_the_sprite_texture);
-}
-
-int	check_structure(g_info *graphic_info)
+int	check_structure(t_gdata *graphic_info)
 {
 	int	count;
 
@@ -84,7 +67,7 @@ static int	cub_atoi(char *source)
 	return (number);
 }
 
-int	parse_cub(char *source_line, g_info *graphic_info)
+int	parse_cub(char *source_line, t_gdata *graphic_info)
 {
 	int	count;
 	char	**temp;

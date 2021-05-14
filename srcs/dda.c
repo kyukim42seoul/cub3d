@@ -1,27 +1,8 @@
 #include "cub3D.h"
 
-static void	addr_pixel_put(t_hub *info, int x, int y, int color)
-{
-	char	*temp;
-
-	temp = info->image.addr + (y * info->image.line_length + x * info->image.bits_per_pixel);
-}
-
-static void	verline (t_hub *info, int x, int y1, int y2, int color)
-{
-	int	temp;
-
-	temp = y1;
-	while (temp <= y2)
-	{
-		addr_pixel_put(info, x, temp, color);
-		temp++;
-	}
-}
-
 int	dda(t_hub *info)
 {
-	int	n;
+	int	x;
 	int	mapX;
 	int	mapY;
 	int	stepX;
@@ -38,10 +19,10 @@ int	dda(t_hub *info)
 	double	deltaDistY;
 	double	perpWallDist;
 
-	n = 0;
-	while (n < info->screenwide)
+	x = 0;
+	while (x < info->screenwide)
 	{
-		cameraX = 2 * n / (double)info->screenwide - 1;
+		cameraX = 2 * x / (double)info->screenwide - 1;
 		rayDirX = info->dirX + info->planeX * cameraX;
 		rayDirY = info->dirY + info->planeY * cameraX;
 
@@ -117,9 +98,10 @@ int	dda(t_hub *info)
 
 		if (side == 1)
 			color = color / 2;
-//		verline(info, n, drawStart, drawEnd, color);
-		n++;
+		verline(info, x, drawStart, drawEnd, color);
+		x++;
 	}
+	mlx_put_image_to_window(info->mlx, info->win, info->image.img, 0, 0);
 	return (0);
 }
 
@@ -127,16 +109,16 @@ int	key_press(int key, t_hub *info)
 {
 	if (key == KEY_W)
 	{
-		if (!info->map[(int)(info->posX + info->dirX * info->moveSpeed)][(int)info->posY])
+		if (info->map[(int)(info->posX + info->dirX * info->moveSpeed)][(int)info->posY] == '0')
 			info->posX += info->dirX * info->moveSpeed;
-		if (!info->map[(int)info->posX][(int)(info->posY + info->dirY * info->moveSpeed)])
+		if (info->map[(int)info->posX][(int)(info->posY + info->dirY * info->moveSpeed)] == '0')
 			info->posY += info->dirY * info->moveSpeed;
 	}
 	if (key == KEY_S)
 	{
-		if (!info->map[(int)(info->posX - info->dirX * info->moveSpeed)][(int)info->posY])
+		if (info->map[(int)(info->posX - info->dirX * info->moveSpeed)][(int)info->posY] == '0')
 			info->posX -= info->dirX * info->moveSpeed;
-		if (!info->map[(int)info->posX][(int)(info->posY - info->dirY * info->moveSpeed)])
+		if (info->map[(int)info->posX][(int)(info->posY - info->dirY * info->moveSpeed)] == '0')
 			info->posY -= info->dirY * info->moveSpeed;
 	}
 	if (key == KEY_A)
@@ -161,11 +143,3 @@ int	key_press(int key, t_hub *info)
 		exit(0);
 	return (0);
 }
-/*
-int	loop_hub(t_hub *info)
-{
-	dda(info);
-//	mlx_put_image_to_window(info->mlx, info->win, info->image.img, 0, 0);
-	return (0);
-}
-*/

@@ -11,6 +11,8 @@ static int	find_character(int map_y, char *line, t_hub *info)
 		info->posY = (double)map_y + 0.5;
 		info->dirX = 0;
 		info->dirY = 1;
+		info->planeX = 0.66;
+		info->planeY = 0;
 		count++;
 	}
 	else if (ft_strchr(line,'S'))
@@ -19,6 +21,8 @@ static int	find_character(int map_y, char *line, t_hub *info)
 		info->posY = (double)map_y + 0.5;
 		info->dirX = 0;
 		info->dirY = -1;
+		info->planeX = -0.66;
+		info->planeY = 0;
 		count++;
 	}
 	else if (ft_strchr(line, 'W'))
@@ -37,6 +41,8 @@ static int	find_character(int map_y, char *line, t_hub *info)
 		info->posY = (double)map_y + 0.5;
 		info->dirX = 1;
 		info->dirY = 0;
+		info->planeX = 0;
+		info->planeY = -0.66;
 		count++;
 	}
 	if (count > 1)
