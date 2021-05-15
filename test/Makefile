@@ -1,6 +1,7 @@
 NAME = cub3D
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror $(DEBUGF)
+DEBUGF = -g3
 MLX = -L . -lmlx
 GNL = srcs/Get_Next_Line/gnl.a
 LIBFT = srcs/libft/libft.a

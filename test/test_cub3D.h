@@ -19,22 +19,6 @@
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_EXIT 17
 
-typedef struct s_img
-{
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		size_line;
-	int		endian;
-}	t_img;
-
-typedef struct s_info
-{
-	t_img	*img;
-	void	*mlx;
-	void	*win;
-}	t_info;
-
 typedef struct s_gdata
 {
 	int	x_render_size;

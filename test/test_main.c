@@ -62,10 +62,12 @@ static void	free_structure(t_hub *info)
 
 	while (info->map[index])
 	{
-		printf("%s\n", info->map[index]);
+		printf("%p %s\n", info->map[index], info->map[index]);
 		free(info->map[index]);
 		index++;
 	}
+	free(info->map[index]);
+	free(info->map);
 	free(info->graphic);
 }
 int	main(int argc, char *argv[])
@@ -79,6 +81,8 @@ int	main(int argc, char *argv[])
 	info.graphic = malloc(sizeof(t_gdata));
 	reset_info(&info);  //ok
 	start_parsing(fd, &info.map, &info);
+	printf("%p %p %p\n", info.map, info.map[0], info.map[1]);
+	printf("graphic : %p\n", info.graphic);
 	free_structure(&info);
 	while (1);
 	return (0);

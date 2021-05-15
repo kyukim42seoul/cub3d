@@ -23,6 +23,7 @@ int	dda(t_hub *info)
 	int	drawEnd;
 
 	x = 0;
+	printf("dda_dir plane : %f %f %f %f\n", info->dirX, info->dirY, info->planeX, info->planeY);
 	while (x < info->screenwide)
 	{
 		cameraX = 2 * x / (double)info->screenwide - 1;
@@ -34,10 +35,10 @@ int	dda(t_hub *info)
 
 		deltaDistX = fabs(1 / rayDirX);
 		deltaDistY = fabs(1 / rayDirY);
-
+//		deltaDistX = sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX)); same
+//		deltaDistY = sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY)); same
 
 		hit = 0;
-
 		if (rayDirX < 0)
 		{
 			stepX = -1;
@@ -72,20 +73,20 @@ int	dda(t_hub *info)
 				mapY += stepY;
 				side = 1;
 			}
-			if (info->map[mapX][mapY] > '0')
+			if (info->map[mapY][mapX] == '1')
 				hit = 1;
 		}
-			if (rayDirX == 0)
-			perpWallDist = sideDistX;
-		else if (rayDirY == 0)
-			perpWallDist = sideDistY;
-		else
-		{
+//			if (rayDirX == 0)
+//			perpWallDist = sideDistX;
+//		else if (rayDirY == 0)
+//			perpWallDist = sideDistY;
+//		else
+//		{
 			if (side == 0)
 				perpWallDist = (mapX - info->posX + (1 - stepX) / 2) / rayDirX;
 			else
 				perpWallDist = (mapY - info->posY + (1 - stepY) / 2) / rayDirY;
-		}
+//		}
 		lineHeight = (int)(info->screenheight / perpWallDist);
 		drawStart = (-lineHeight / 2) + (info->screenheight / 2);
 		if (drawStart < 0)
@@ -93,10 +94,10 @@ int	dda(t_hub *info)
 		drawEnd = (lineHeight / 2) + (info->screenheight / 2);
 		if (drawEnd >= info->screenheight)
 			drawEnd = info->screenheight - 1;
-		/*if (info->map[mapX][mapY] == '1')
+		if (info->map[mapY][mapX] == '1')
 			color = 0xFF0000;
 		else
-			color = 0x123145;*/
+			color = 0x123145;
 
 		if (side == 1)
 			color = color / 2;
@@ -110,19 +111,20 @@ int	dda(t_hub *info)
 
 int	key_press(int key, t_hub *info)
 {
-	printf("%s\n", info->map[(int)info->posY]);
-	printf("%d %d %c\n", (int)(info->posX + info->dirX * info->moveSpeed), (int)info->posY, info->map[(int)info->posY][(int)(info->posX + info->dirX * info->moveSpeed)]);
+//	printf("%s\n", info->map[(int)info->posY]);
+//	printf("%d %d %c\n", (int)(info->posX + info->dirX * info->moveSpeed), (int)info->posY, info->map[(int)info->posY][(int)(info->posX + info->dirX * info->moveSpeed)]);
+	printf("%d %d %c\n", (int)(info->posX), (int)info->posY, info->map[(int)info->posY][(int)(info->posX)]);
 	if (key == KEY_W)
 	{
 		printf("W\n");
 		if (info->map[(int)info->posY][(int)(info->posX + info->dirX * info->moveSpeed)] == '0')
 		{
-			printf("Wx\n");
+//			printf("Wx\n");
 			info->posX += info->dirX * info->moveSpeed;
 		}
 		if (info->map[(int)(info->posY + info->dirY * info->moveSpeed)][(int)info->posX] == '0')
 		{
-			printf("Wy\n");
+//			printf("Wy\n");
 			info->posY += info->dirY * info->moveSpeed;
 		}
 	}
@@ -131,12 +133,12 @@ int	key_press(int key, t_hub *info)
 		printf("S\n");
 		if (info->map[(int)info->posY][(int)(info->posX - info->dirX * info->moveSpeed)] == '0')
 		{
-			printf("Sx\n");
+//			printf("Sx\n");
 			info->posX -= info->dirX * info->moveSpeed;
 		}
 		if (info->map[(int)(info->posY - info->dirY * info->moveSpeed)][(int)info->posX] == '0')
 		{
-			printf("Sy\n");
+//			printf("Sy\n");
 			info->posY -= info->dirY * info->moveSpeed;
 		}
 	}
@@ -158,6 +160,7 @@ int	key_press(int key, t_hub *info)
 		info->planeX = info->planeX * cos(-info->rotationSpeed) - info->planeY * sin(-info->rotationSpeed);
 		info->planeY = oldPlaneX * sin(-info->rotationSpeed) + info->planeY * cos(-info->rotationSpeed);
 	}
+	printf("%f %f\n", info->dirX, info->dirY);
 	if (key == KEY_ESC)
 		exit(0);
 	return (0);

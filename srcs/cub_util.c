@@ -16,6 +16,7 @@ void	verline (t_hub *info, int x, int y1, int y2, int color)
 
 	eyesight = info->screenheight / 2;
 	y = 0;
+
 	while (y < eyesight)
 	{
 		set_pixel_color(info, x, y, 0x006699FF);
@@ -25,7 +26,6 @@ void	verline (t_hub *info, int x, int y1, int y2, int color)
 	{
 		set_pixel_color(info, x, y, 0x00996600);
 		y++;
-
 	}
 	while (y1 < y2)
 	{

@@ -3,56 +3,56 @@
 static int	find_character(int map_y, char *line, t_hub *info)
 {
 	static int	count;
-//	char	*temp;
+	char	*temp;
 
 	count = 0;
-//	temp = 0;
+	temp = 0;
 	if (ft_strchr(line, 'N'))
 	{
-		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'N')) + 0.5);
-		info->posY = (double)map_y + 0.5;
+		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'N')));
+		info->posY = (double)map_y;
 		info->dirX = 0;
 		info->dirY = -1;
 		info->planeX = 0.66;
 		info->planeY = 0;
-//		temp = ft_strchr(line, 'N');
-//		*temp = '0';
+		temp = ft_strchr(line, 'N');
+		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line,'S'))
 	{
-		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'S')) + 0.5);
-		info->posY = (double)map_y + 0.5;
+		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'S')));
+		info->posY = (double)map_y;
 		info->dirX = 0;
 		info->dirY = 1;
 		info->planeX = -0.66;
 		info->planeY = 0;
-//		temp = ft_strchr(line, 'S');
-//		*temp = '0';
+		temp = ft_strchr(line, 'S');
+		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line, 'W'))
 	{
-		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'W')) + 0.5);
-		info->posY = (double)map_y + 0.5;
+		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'W')));
+		info->posY = (double)map_y;
 		info->dirX = -1;
 		info->dirY = 0;
 		info->planeX = 0;
 		info->planeY = -0.66;
-//		temp = ft_strchr(line, 'W');
-//		*temp = '0';
+		temp = ft_strchr(line, 'W');
+		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line, 'E'))
 	{
-		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'E')) + 0.5);
-		info->posY = (double)map_y + 0.5;
+		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'E')));
+		info->posY = (double)map_y;
 		info->dirX = 1;
 		info->dirY = 0;
 		info->planeX = 0;
 		info->planeY = 0.66;
-//		temp = ft_strchr(line, 'E');
-//		*temp = '0';
+		temp = ft_strchr(line, 'E');
+		*temp = '0';
 		count++;
 	}
 	if (count > 1)
@@ -113,8 +113,10 @@ void	parse_map(int fd, char ***map, t_hub *info)
 			map_x = ft_strlen(current->content);
 		map_y++;
 		ft_lstadd_back(&head, current);
+		printf("line : %p\n", line);
 		free(line);
 	}
+	free(line);
 	if (count != 1)
 	{
 		info->error++;
@@ -129,8 +131,10 @@ void	parse_map(int fd, char ***map, t_hub *info)
 		while (current->next)
 		{
 			(*map)[index] = ft_strdup((char *)current->content);
+			printf("map address : %p %p %p\n", map, *map, (*map)[index]);
 			old = current;
 			current = current->next;
+			free(old->content);
 			free(old);
 			index++;
 		}
