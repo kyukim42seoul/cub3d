@@ -1,5 +1,58 @@
 #include "cub3D.h"
 
+void	draw_image(t_hub *info)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	x = 0;
+	while (y < info->screenheight)
+	{
+		while (x < info->screenwide)
+		{
+			info->image.addr[y * info->screenheight + x] = info->buf[y][x];
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(info->mlx, info->win, info->image.img, 0, 0);
+}
+
+void	load_image(t_hub *info, int *texture, char *path, t_idata *image)
+{
+	image->img = mlx_xpm_file_to_image(info->mlx, path, &image->img_width, &image->img_height);
+	image->addr = (int *)mlx_get_data_addr(image->img, &image->bits_per_pixel, &image->line_length, &image->endian);
+}
+
+void	set_texture_buf(t_hub *info)
+{
+	int	temp;
+
+	temp = 0;
+	info->texture = (int **)malloc(sizeof(int *) * info->screenheight + 1);
+	while (temp < info->screenheight)
+	{
+		info->texture[temp] = (int *)malloc(sizeof(int) * info->screenwide);
+		temp++;
+	}
+	info->texture[temp] = NULL;
+}
+
+void	free_texture_buf(t_hub *info)
+{
+	int	temp;
+
+	temp = 0;
+	while (temp < info->screenheight)
+	{
+		free(info->texture[temp]);
+		temp++;
+	}
+	free(info->texture[temp]);
+	free(info->texture);
+}
+
 void	set_pixel_color(t_hub *info, int x, int y, int color)
 {
 	char	*dst;

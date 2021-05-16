@@ -19,6 +19,31 @@
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_EXIT 17
 
+typedef struct s_var
+{
+	int	x;
+	int	mapX;
+	int	mapY;
+	double	cameraX;
+	double	rayDirX;
+	double	rayDirY;
+
+	int	stepX;
+	int	stepY;
+	int	hit;
+	int	side;
+	int	lineHeight;
+	double	sideDistX;
+	double	sideDistY;
+	double	deltaDistX;
+	double	deltaDistY;
+	double	perpWallDist;
+	int color;
+	int	drawStart;
+	int	drawEnd;
+
+}	t_var;
+
 typedef struct s_gdata
 {
 	int	x_render_size;
@@ -45,6 +70,8 @@ typedef struct s_idata
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	int		img_height;
+	int		img_width;
 }	t_idata;
 
 typedef struct info_hub
@@ -66,6 +93,8 @@ typedef struct info_hub
 	int		screenwide;
 	int		screenheight;
 	char	**map;
+	int	**texture;
+	int	**buf;
 }	t_hub;
 
 //cub_util.c
@@ -74,10 +103,13 @@ void	print_structure(t_hub *info);
 void	print_graphic(t_gdata *graphic_info);
 void	verline (t_hub *info, int x, int y1, int y2, int color);
 void	set_pixel_color(t_hub *info, int x, int y, int color);
+void	set_texture_buf(t_hub *info);
+void	draw_image(t_hub *info);
 
 //dda.c + 2 static verline, addr_pixel_put
 int	dda(t_hub *info);
 int	key_press(int key, t_hub *info);
+int	main_loop(t_hub *info);
 
 //main.c + main + 1 static print_map
 
