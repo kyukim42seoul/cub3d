@@ -83,7 +83,7 @@ int	main(int argc, char *argv[])
 //	set_texture_buf(&info);
 	info.win = mlx_new_window(info.mlx, info.screenwide, info.screenheight, "cub3D");
 	info.image.img = mlx_new_image(info.mlx, info.screenwide, info.screenheight);
-	info.image.addr = mlx_get_data_addr(info.image.img, &info.image.bits_per_pixel, &info.image.line_length, &info.image.endian);
+	info.image.addr = (int *)mlx_get_data_addr(info.image.img, &info.image.bits_per_pixel, &info.image.line_length, &info.image.endian);
 	mlx_loop_hook(info.mlx, &main_loop, &info);
 	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
 	mlx_loop(info.mlx);

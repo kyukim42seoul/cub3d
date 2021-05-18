@@ -21,8 +21,34 @@ void	draw_image(t_hub *info)
 
 void	load_image(t_hub *info, int *texture, char *path, t_idata *image)
 {
+	int	x;
+	int	y;
+
+	x = 0;
+	y = 0;
 	image->img = mlx_xpm_file_to_image(info->mlx, path, &image->img_width, &image->img_height);
 	image->addr = (int *)mlx_get_data_addr(image->img, &image->bits_per_pixel, &image->line_length, &image->endian);
+	while (y < info->image.img_height)
+	{
+		while (x < info->image.img_width)
+		{
+			texture[y * info->image.img_height + x] = info->image.addr[y * info->image.img_width + x];
+			x++;
+		}
+		y++;
+	}
+	mlx_destroy_image(info->mlx, info->image.img);
+}
+
+void	load_texture(t_hub *info)
+{
+	load_image(info, info->texture[0], info->graphic->path_to_the_north_texture, info->image.img);
+	load_image(info, info->texture[1], info->graphic->path_to_the_south_texture, info->image.img);
+	load_image(info, info->texture[2], info->graphic->path_to_the_west_texture, info->image.img);
+	load_image(info, info->texture[3], info->graphic->path_to_the_east_texture, info->image.img);
+	load_image(info, info->texture[4], info->graphic->path_to_the_sky_texture, info->image.img);
+	load_image(info, info->texture[5], info->graphic->path_to_the_floor_texture, info->image.img);
+	load_image(info, info->texture[6], info->graphic->path_to_the_sprite_texture, info->image.img);
 }
 
 void	set_texture_buf(t_hub *info)
@@ -57,7 +83,7 @@ void	set_pixel_color(t_hub *info, int x, int y, int color)
 {
 	char	*dst;
 
-	dst = info->image.addr + (y * info->image.line_length + x * (info->image.bits_per_pixel / 8));
+	dst = (char *)(info->image.addr + (y * info->image.line_length + x * (info->image.bits_per_pixel / 8)));
 
 	*(unsigned int *)dst = color;
 }

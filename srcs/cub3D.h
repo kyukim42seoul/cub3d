@@ -19,6 +19,9 @@
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_EXIT 17
 
+# define texHeight 64
+# define texWidth 64
+
 typedef struct s_var
 {
 	int	x;
@@ -38,10 +41,17 @@ typedef struct s_var
 	double	deltaDistX;
 	double	deltaDistY;
 	double	perpWallDist;
-	int color;
+	int	color;
 	int	drawStart;
 	int	drawEnd;
 
+	int	texNum;
+	double	wallX;
+	int	texX;
+	int	texY;
+	int y;
+	double	step;
+	double	texPos
 }	t_var;
 
 typedef struct s_gdata
@@ -66,7 +76,7 @@ typedef struct s_gdata
 typedef struct s_idata
 {
 	void	*img;
-	char	*addr;
+	int		*addr;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
@@ -105,6 +115,8 @@ void	verline (t_hub *info, int x, int y1, int y2, int color);
 void	set_pixel_color(t_hub *info, int x, int y, int color);
 void	set_texture_buf(t_hub *info);
 void	draw_image(t_hub *info);
+void	load_image(t_hub *info, int *texture, char *path, t_idata *image);
+void	load_texture(t_hub *info);
 
 //dda.c + 2 static verline, addr_pixel_put
 int	dda(t_hub *info);

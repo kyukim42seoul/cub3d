@@ -103,8 +103,34 @@ int	dda(t_hub *info)
 		}
 		calc_perpWallDist_by_side_pos(info, &var);
 		calc_drawstart_drawend_by_perpWallDist(info, &var);
-		set_color_by_map_value(info, &var);
-		verline(info, var.x, var.drawStart, var.drawEnd, var.color);
+//		set_color_by_map_value(info, &var);
+//		verline(info, var.x, var.drawStart, var.drawEnd, var.color);
+		var.texNum = info->map[var.mapX][var.mapY] - 1; // -1 은 뭐며, mapX 랑 mapY 위치는 또 왜 반대인가??
+
+		if (var.side == 0)
+			var.wallX = info->posY + var.perpWallDist * var.rayDirY;
+		else
+			var.wallX = info->posX + var.perpWallDist * var.rayDirX;
+		var.wallX -= floor(var.wallX);
+
+		var.texX = (int)(var.wallX * (double)texWidth);
+		if (var.side == 0 && var.rayDirX > 0) // 동쪽으로 추측
+			var.texX = texWidth - var.texX -1;
+		if (var.side == 1 && var.rayDirY < 0) // 북쪽으로 추측
+			var.texX = texWidth - var.texX - 1;
+
+		var.step = 1.0 * texHeight / var.lineHeight; // 텍스쳐 높이를 그려야 할 선 길이로 나눈 건 이해가 되는데 1을 곱하는 이유는?
+		var.texPos = (var.drawStart - info->screenheight / 2 + info->screenheight / 2) * var.step;
+		var.y = var.drawStart;
+		while (var.y < var.drawEnd)
+		{
+			var.texY = (int)var.texPos & (texHeight - 1); // ㄷㄷ 이거 뭐야 & 은 뭐고... texHeight 에서 1은 또 왜 빼는데;;
+			var.texPos += var.step;
+			var.color = info->texture[var.texNum][texHeight * var.texY + var.texX];
+			if (var.side == 1)
+				var.color = (var.color >> 1) & 8355711;
+			info->buf[var.y][var.x] = var.color;
+		}
 		var.x++;
 	}
 	return (0);

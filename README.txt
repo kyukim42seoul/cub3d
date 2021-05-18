@@ -115,7 +115,6 @@ DDA 에서 알고리즘, 이미지 그리기 파트 분리
 
 스크린 사이즈 버퍼 -> img 옮기기 -> put image to window
 
-
 의문 : Khoi 님은 adds 를 int * 로 쓰고 나는 char * 로 돼 있다.
 
 Texture 로딩 과정(xpm -> image_ptr) : mlx_xpm_file_to_image -> mlx_get_data_addr -> while (height, width) texture[][] == img[][] -> mlx_destroy_image(필수!)(이걸 해줘야 image 포인터를 나중에 화면 출력에 쓸 수 있음)
