@@ -6,17 +6,19 @@ void	draw_image(t_hub *info)
 	int	x;
 
 	y = 0;
-	x = 0;
 	while (y < info->screenheight)
 	{
+		x = 0;
 		while (x < info->screenwide)
 		{
-			info->image.addr[y * info->screenheight + x] = info->buf[y][x];
+			info->image.addr[y * info->image.line_length / 4 + x] = info->buf[y][x];
 			x++;
 		}
 		y++;
 	}
+//	mlx_sync(1, info->image.img);
 	mlx_put_image_to_window(info->mlx, info->win, info->image.img, 0, 0);
+//	mlx_sync(3, info->win);
 }
 
 void	load_image(t_hub *info, int *texture, char *path, t_idata *image)
@@ -24,15 +26,15 @@ void	load_image(t_hub *info, int *texture, char *path, t_idata *image)
 	int	x;
 	int	y;
 
-	x = 0;
 	y = 0;
 	image->img = mlx_xpm_file_to_image(info->mlx, path, &image->img_width, &image->img_height);
 	image->addr = (int *)mlx_get_data_addr(image->img, &image->bits_per_pixel, &image->line_length, &image->endian);
 	while (y < info->image.img_height)
 	{
+		x = 0;
 		while (x < info->image.img_width)
 		{
-			texture[y * info->image.img_height + x] = info->image.addr[y * info->image.img_width + x];
+			texture[y * info->image.img_width + x] = info->image.addr[y * info->image.img_width + x];
 			x++;
 		}
 		y++;
@@ -42,13 +44,11 @@ void	load_image(t_hub *info, int *texture, char *path, t_idata *image)
 
 void	load_texture(t_hub *info)
 {
-	load_image(info, info->texture[0], info->graphic->path_to_the_north_texture, info->image.img);
-	load_image(info, info->texture[1], info->graphic->path_to_the_south_texture, info->image.img);
-	load_image(info, info->texture[2], info->graphic->path_to_the_west_texture, info->image.img);
-	load_image(info, info->texture[3], info->graphic->path_to_the_east_texture, info->image.img);
-	load_image(info, info->texture[4], info->graphic->path_to_the_sky_texture, info->image.img);
-	load_image(info, info->texture[5], info->graphic->path_to_the_floor_texture, info->image.img);
-	load_image(info, info->texture[6], info->graphic->path_to_the_sprite_texture, info->image.img);
+	load_image(info, info->texture[0], info->graphic->path_to_the_north_texture, &info->image);
+	load_image(info, info->texture[1], info->graphic->path_to_the_south_texture, &info->image);
+	load_image(info, info->texture[2], info->graphic->path_to_the_west_texture, &info->image);
+	load_image(info, info->texture[3], info->graphic->path_to_the_east_texture, &info->image);
+	load_image(info, info->texture[4], info->graphic->path_to_the_sprite_texture, &info->image);
 }
 
 void	set_texture_buf(t_hub *info)
@@ -56,13 +56,26 @@ void	set_texture_buf(t_hub *info)
 	int	temp;
 
 	temp = 0;
-	info->texture = (int **)malloc(sizeof(int *) * info->screenheight + 1);
-	while (temp < info->screenheight)
+	info->texture = (int **)malloc(sizeof(int *) * 5); // texNum 으로 나중에 교체
+	while (temp < 5)
 	{
-		info->texture[temp] = (int *)malloc(sizeof(int) * info->screenwide);
+		info->texture[temp] = (int *)malloc(sizeof(int) * texHeight * texWidth);
 		temp++;
 	}
-	info->texture[temp] = NULL;
+}
+
+void	set_screen_buf(t_hub *info)
+{
+	int	temp;
+
+	temp = 0;
+	info->buf = (int **)malloc(sizeof(int *) * info->screenheight + 1);
+	while (temp < info->screenheight)
+	{
+		info->buf[temp] = (int *)malloc(sizeof(int) * info->screenwide);
+		temp++;
+	}
+	info->buf[temp] = NULL;
 }
 
 void	free_texture_buf(t_hub *info)
@@ -88,29 +101,32 @@ void	set_pixel_color(t_hub *info, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	verline (t_hub *info, int x, int y1, int y2, int color)
+int	calc_distance(t_hub *info, int	x, int	y)
 {
-	int	y;
-	int	eyesight;
+	int	distX;
+	int	distY;
+	int	result;
 
-	eyesight = info->screenheight / 2;
-	y = 0;
+	distX = 0;
+	distY = 0;
+	result = 0;
+	x += 0.5;
+	y += 0.5;
+	if (x >= info->posX)
+		distX = x - info->posX;
+	else if (x < info->posX)
+		distX = info->posX - x;
+	if ( y < info->posY)
+		distY = info->posY - y;
+	else if (y >= info->posY)
+		distY = y - info->posY;
+	result = sprt(distX * distX + distY * distY);
+	return (result);
+}
 
-	while (y < eyesight)
-	{
-		set_pixel_color(info, x, y, 0x006699FF);
-		y++;
-	}
-	while (y < info->screenheight)
-	{
-		set_pixel_color(info, x, y, 0x00996600);
-		y++;
-	}
-	while (y1 < y2)
-	{
-		set_pixel_color(info, x, y1, color);
-		y1++;
-	}
+void	save_sprite()
+{
+	if ()
 }
 
 void	reset_info(t_hub *info)

@@ -46,7 +46,7 @@ int	main()
 	return (0);
 }
 */
-
+/*
 static void	free_structure(t_hub *info)
 {
 	int	index;
@@ -70,10 +70,16 @@ static void	free_structure(t_hub *info)
 	free(info->map);
 	free(info->graphic);
 }
+*/
 int	main(int argc, char *argv[])
 {
 	t_hub		info;
 	int			fd;
+	int			width = 0;
+	int			height = 0;
+	void		*test;
+
+	test = 0;
 
 	if (argc != 2)
 		return (0);
@@ -83,7 +89,10 @@ int	main(int argc, char *argv[])
 	start_parsing(fd, &info.map, &info);
 	printf("%p %p %p\n", info.map, info.map[0], info.map[1]);
 	printf("graphic : %p\n", info.graphic);
-	free_structure(&info);
-	while (1);
+	info.mlx = mlx_init();
+
+	info.image.img = mlx_xpm_file_to_image(info.mlx, "./srcs/images/ft_textures/wall_n.xpm", &width, &height);
+	printf("%d %d\n", width, height);
+//	free_structure(&info);
 	return (0);
 }

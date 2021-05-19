@@ -22,6 +22,15 @@
 # define texHeight 64
 # define texWidth 64
 
+typedef struct s_sprite_list
+{
+	int						number;
+	int						spriteX;
+	int						spriteY;
+	double					distance;
+	struct s_sprite_list	*next;
+}	t_sprite_list;
+
 typedef struct s_var
 {
 	int	x;
@@ -51,7 +60,7 @@ typedef struct s_var
 	int	texY;
 	int y;
 	double	step;
-	double	texPos
+	double	texPos;
 }	t_var;
 
 typedef struct s_gdata
@@ -111,9 +120,9 @@ typedef struct info_hub
 void	reset_info(t_hub *info);
 void	print_structure(t_hub *info);
 void	print_graphic(t_gdata *graphic_info);
-void	verline (t_hub *info, int x, int y1, int y2, int color);
 void	set_pixel_color(t_hub *info, int x, int y, int color);
 void	set_texture_buf(t_hub *info);
+void	set_screen_buf(t_hub *info);
 void	draw_image(t_hub *info);
 void	load_image(t_hub *info, int *texture, char *path, t_idata *image);
 void	load_texture(t_hub *info);
@@ -134,5 +143,9 @@ void	parse_map(int fd, char ***map, t_hub *info);
 
 //start_parsing.c
 void	start_parsing(int fd, char ***map, t_hub *info);
+
+//draw.c
+void	test(t_hub *info, t_var var);
+void	draw_hub(t_hub *info, t_var *var);
 
 #endif

@@ -31,10 +31,6 @@ int	check_structure(t_gdata *graphic_info)
 		count++;
 	if (graphic_info->path_to_the_sprite_texture)
 		count++;
-	if (graphic_info->path_to_the_sky_texture)
-		count++;
-	if (graphic_info->path_to_the_floor_texture)
-		count++;
 	return (count);
 }
 
@@ -55,7 +51,7 @@ static void	free_by_count(char **source, int count)
 	static int	checking = 0;
 	while (count-- > 0)
 	{
-		printf("%d %d\n", count, checking);
+//		printf("%d %d\n", count, checking);
 		free(source[count]);
 		checking++;
 	}

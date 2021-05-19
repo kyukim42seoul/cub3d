@@ -1,17 +1,19 @@
 NAME = cub3D
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror $(DEBUGF)
+DEBUGF = -g3
 MLX = -L . -lmlx
 GNL = srcs/Get_Next_Line/gnl.a
 LIBFT = srcs/libft/libft.a
 FRAMEWORKS = -framework OpenGl -framework AppKit
 
-OBJECTS =	srcs/cub_util.o \
+OBJECTS =	srcs/main.o \
 	srcs/parse_graphic.o \
 	srcs/parse_map.o \
-	srcs/main.o \
 	srcs/start_parsing.o \
+	srcs/cub_util.o \
 	srcs/dda.o \
+	srcs/draw.o \
 
 all : gnl libft mlx $(NAME)
 

@@ -7,7 +7,7 @@ void	start_parsing(int fd, char ***map, t_hub *info)
 	char	*line;
 
 	count = 0;
-	while (count != 15)
+	while (count != 13)
 	{
 		count = check_structure(info->graphic); //ok
 		get_next_line(fd, &line);

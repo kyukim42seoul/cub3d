@@ -1,5 +1,5 @@
 #include "cub3D.h"
-
+/*
 static void	print_map(char **map)
 {
 	int	index;
@@ -11,7 +11,7 @@ static void	print_map(char **map)
 		index++;
 	}
 }
-
+*/
 /*
 static void	free_structure(t_hub *info)
 {
@@ -60,27 +60,53 @@ int	main(int argc, char *argv[])
 	t_hub		info;
 	int			fd;
 	int			index;
-	int			temp;
 
 	index = 0;
 	info.map = 0;
-	temp = 0;
 	if (argc != 2)
 		return (0);
 	fd = open(argv[1], O_RDONLY);
 	info.graphic = malloc(sizeof(t_gdata));
 	reset_info(&info);
 	start_parsing(fd, &info.map, &info);
+/*
 	if (info.error == 0)
 	{
 		print_structure(&info);
-		print_map(info.map);
+//		print_map(info.map);
 	}
 	else
 		printf("%s\n", info.error_message);
+*/
 	info.mlx = mlx_init();
-	mlx_get_screen_size(info.mlx, &info.screenwide, &info.screenheight);
-//	set_texture_buf(&info);
+//	mlx_get_screen_size(info.mlx, &info.screenwide, &info.screenheight);
+	info.screenwide = info.graphic->x_render_size;
+	info.screenheight = info.graphic->y_render_size;
+	set_texture_buf(&info);
+	set_screen_buf(&info);
+	load_texture(&info);
+
+//-------------------------
+/*
+	t_idata		test;
+	void		*win_2;
+	int			y = 0;
+	int			x = 0;
+	win_2 = mlx_new_window(info.mlx, 100, 100, "test");
+	test.img = mlx_new_image(info.mlx, 100, 100);
+	test.addr = (int *)mlx_get_data_addr(test.img, &test.bits_per_pixel, &test.line_length, &test.endian);
+	while (y < 64)
+	{
+		while (x < 64)
+		{
+			test.addr[y * 64 + x] = info.texture[0][y * 64 + x];
+			x++;
+		}
+		y++;
+	}
+	mlx_put_image_to_window(info.mlx, win_2, test.img, 0, 0);
+*/
+//-------------------------
 	info.win = mlx_new_window(info.mlx, info.screenwide, info.screenheight, "cub3D");
 	info.image.img = mlx_new_image(info.mlx, info.screenwide, info.screenheight);
 	info.image.addr = (int *)mlx_get_data_addr(info.image.img, &info.image.bits_per_pixel, &info.image.line_length, &info.image.endian);
