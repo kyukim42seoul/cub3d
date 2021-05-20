@@ -16,9 +16,7 @@ void	draw_image(t_hub *info)
 		}
 		y++;
 	}
-//	mlx_sync(1, info->image.img);
 	mlx_put_image_to_window(info->mlx, info->win, info->image.img, 0, 0);
-//	mlx_sync(3, info->win);
 }
 
 void	load_image(t_hub *info, int *texture, char *path, t_idata *image)
@@ -101,34 +99,6 @@ void	set_pixel_color(t_hub *info, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int	calc_distance(t_hub *info, int	x, int	y)
-{
-	int	distX;
-	int	distY;
-	int	result;
-
-	distX = 0;
-	distY = 0;
-	result = 0;
-	x += 0.5;
-	y += 0.5;
-	if (x >= info->posX)
-		distX = x - info->posX;
-	else if (x < info->posX)
-		distX = info->posX - x;
-	if ( y < info->posY)
-		distY = info->posY - y;
-	else if (y >= info->posY)
-		distY = y - info->posY;
-	result = sprt(distX * distX + distY * distY);
-	return (result);
-}
-
-void	save_sprite()
-{
-	if ()
-}
-
 void	reset_info(t_hub *info)
 {
 	info->error = 0;
@@ -159,6 +129,11 @@ void	reset_info(t_hub *info)
 	info->image.img = 0;
 	info->screenwide = 0;
 	info->screenheight = 0;
+	info->number_of_sprite = 0;
+	info->flag.key_w = 0;
+	info->flag.key_s = 0;
+	info->flag.key_a = 0;
+	info->flag.key_d = 0;
 }
 
 void	print_graphic(t_gdata *graphic_info)
@@ -202,4 +177,9 @@ void	print_structure(t_hub *info)
 	printf("moveSpeed : %f\n", info->moveSpeed);
 	printf("rotationSpeed : %f\n", info->rotationSpeed);
 }
+/*
+int	function_exit(int *error_flag)
+{
 
+}
+*/

@@ -17,6 +17,7 @@
 # define KEY_ESC 53
 
 # define X_EVENT_KEY_PRESS 2
+# define X_EVENT_KEY_RELEASE 3
 # define X_EVENT_KEY_EXIT 17
 
 # define texHeight 64
@@ -31,6 +32,14 @@ typedef struct s_sprite_list
 	struct s_sprite_list	*next;
 }	t_sprite_list;
 
+typedef struct s_flag
+{
+	int	key_w;
+	int	key_s;
+	int	key_a;
+	int	key_d;
+	int	key_esc;
+}	t_flag;
 typedef struct s_var
 {
 	int	x;
@@ -39,7 +48,6 @@ typedef struct s_var
 	double	cameraX;
 	double	rayDirX;
 	double	rayDirY;
-
 	int	stepX;
 	int	stepY;
 	int	hit;
@@ -53,7 +61,6 @@ typedef struct s_var
 	int	color;
 	int	drawStart;
 	int	drawEnd;
-
 	int	texNum;
 	double	wallX;
 	int	texX;
@@ -93,10 +100,20 @@ typedef struct s_idata
 	int		img_width;
 }	t_idata;
 
+typedef struct s_sprite
+{
+	int	order;
+	double	x;
+	double	y;
+	double	distance;
+}	t_sprite;
+
 typedef struct info_hub
 {
 	t_gdata	*graphic;
 	t_idata	image;
+	t_sprite	*sprite;
+	t_flag	flag;
 	double	posX;
 	double	posY;
 	double	dirX;
@@ -114,6 +131,8 @@ typedef struct info_hub
 	char	**map;
 	int	**texture;
 	int	**buf;
+	double	*z;
+	int	number_of_sprite;
 }	t_hub;
 
 //cub_util.c
@@ -127,12 +146,11 @@ void	draw_image(t_hub *info);
 void	load_image(t_hub *info, int *texture, char *path, t_idata *image);
 void	load_texture(t_hub *info);
 
-//dda.c + 2 static verline, addr_pixel_put
+//dda.c + 5 static
 int	dda(t_hub *info);
-int	key_press(int key, t_hub *info);
-int	main_loop(t_hub *info);
 
 //main.c + main + 1 static print_map
+int	main_loop(t_hub *info);
 
 //parse_graphic.c + 3 static compare_text, free_by_count, cub_atoi
 int	check_structure(t_gdata *graphic);
@@ -145,7 +163,15 @@ void	parse_map(int fd, char ***map, t_hub *info);
 void	start_parsing(int fd, char ***map, t_hub *info);
 
 //draw.c
-void	test(t_hub *info, t_var var);
 void	draw_hub(t_hub *info, t_var *var);
+
+//sprite.c
+void	draw_sprite(t_hub *info);
+
+//key.c
+int	key_update(t_hub *info);
+int	key_press(int key, t_hub *info);
+int	key_release(int key, t_hub *info);
+
 
 #endif

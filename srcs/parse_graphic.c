@@ -124,6 +124,7 @@ int	parse_cub(char *source_line, t_gdata *graphic_info)
 //		printf("S %p\n", graphic_info->path_to_the_sprite_texture);
 		free_by_count(temp, count);
 	}
+	/*
 	else if (compare_text(temp[0], "ST"))
 	{
 //		printf("STcount : %d\n", count);
@@ -138,6 +139,7 @@ int	parse_cub(char *source_line, t_gdata *graphic_info)
 //		printf("FT %p\n", graphic_info->path_to_the_floor_texture);
 		free_by_count(temp, count);
 	}
+	*/
 	else if (compare_text(temp[0], "F"))
 	{
 //		printf("Fcount : %d\n", count);

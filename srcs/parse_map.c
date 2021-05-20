@@ -78,6 +78,23 @@ static int	check_map_start(char *line)
 	return (0);
 }
 
+static void	find_sprite(t_hub *info, char *line, int map_y)
+{
+	int	index;
+
+	index = 0;
+	while (line[index])
+	{
+		if (line[index] == '2')
+		{
+			info->sprite[info->number_of_sprite].x = index + 0.5;
+			info->sprite[info->number_of_sprite].y = map_y + 0.5;
+			info->number_of_sprite++;
+		}
+		index++;
+	}
+}
+
 void	parse_map(int fd, char ***map, t_hub *info)
 {
 	int	map_x;
@@ -108,6 +125,10 @@ void	parse_map(int fd, char ***map, t_hub *info)
 		}
 		temp = ft_strdup(line);
 		count += find_character(map_y, temp, info);
+		find_sprite(info, line, map_y);
+//--------------------
+
+//--------------------
 		current = ft_lstnew((void *)temp);
 		if ((int)ft_strlen(current->content) > map_x)
 			map_x = ft_strlen(current->content);

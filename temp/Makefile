@@ -14,6 +14,8 @@ OBJECTS =	srcs/main.o \
 	srcs/cub_util.o \
 	srcs/dda.o \
 	srcs/draw.o \
+	srcs/sprite.o \
+	srcs/key.o \
 
 all : gnl libft mlx $(NAME)
 

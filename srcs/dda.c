@@ -1,12 +1,5 @@
 #include "cub3D.h"
 
-int	main_loop(t_hub *info)
-{
-	dda(info);
-	draw_image(info);
-	return (0);
-}
-
 static	void	stepX_sideDist_by_rayDir(t_hub *info, t_var *var)
 {
 	if (var->rayDirX < 0)
@@ -59,11 +52,9 @@ static void	calc_drawstart_drawend_by_perpWallDist(t_hub *info, t_var *var)
 {
 	var->lineHeight = (int)(info->screenheight / var->perpWallDist);
 	var->drawStart = (info->screenheight / 2) - (var->lineHeight / 2);
-//	if (var->drawStart < 0)
-//		var->drawStart = 0;
 	var->drawEnd = (var->lineHeight / 2) + (info->screenheight / 2);
 	if (var->drawEnd >= info->screenheight)
-		var->drawEnd = info->screenheight /*- 1*/;
+		var->drawEnd = info->screenheight;
 }
 
 static void	set_default_var(t_hub *info, t_var *var)
@@ -92,12 +83,9 @@ int	dda(t_hub *info)
 			set_side_merge_sideDist_deltaDist(&var);
 			if (info->map[var.mapY][var.mapX] == '1')
 				var.hit = 1;
-			else if (info->map[var.mapY][var.mapX] == '2')
-			{
-
-			}
 		}
 		calc_perpWallDist_by_side_pos(info, &var);
+		info->z[var.x] = var.perpWallDist;
 		calc_drawstart_drawend_by_perpWallDist(info, &var);
 		if (var.side == 0)
 			var.wallX = info->posY + var.perpWallDist * var.rayDirY;
@@ -123,44 +111,5 @@ int	dda(t_hub *info)
 		draw_hub(info, &var);
 		var.x++;
 	}
-	return (0);
-}
-
-int	key_press(int key, t_hub *info)
-{
-	if (key == KEY_W)
-	{
-		if (info->map[(int)info->posY][(int)(info->posX + info->dirX * info->moveSpeed)] == '0')
-			info->posX += info->dirX * info->moveSpeed;
-		if (info->map[(int)(info->posY + info->dirY * info->moveSpeed)][(int)info->posX] == '0')
-			info->posY += info->dirY * info->moveSpeed;
-	}
-	if (key == KEY_S)
-	{
-		if (info->map[(int)info->posY][(int)(info->posX - info->dirX * info->moveSpeed)] == '0')
-			info->posX -= info->dirX * info->moveSpeed;
-		if (info->map[(int)(info->posY - info->dirY * info->moveSpeed)][(int)info->posX] == '0')
-			info->posY -= info->dirY * info->moveSpeed;
-	}
-	if (key == KEY_D)
-	{
-		double	oldDirX = info->dirX;
-		info->dirX = info->dirX * cos(info->rotationSpeed) - info->dirY * sin(info->rotationSpeed);
-		info->dirY = oldDirX * sin(info->rotationSpeed) + info->dirY * cos(info->rotationSpeed);
-		double	oldPlaneX = info->planeX;
-		info->planeX = info->planeX * cos(info->rotationSpeed) - info->planeY * sin(info->rotationSpeed);
-		info->planeY = oldPlaneX * sin(info->rotationSpeed) + info->planeY * cos(info->rotationSpeed);
-	}
-	if (key == KEY_A)
-	{
-		double	oldDirX = info->dirX;
-		info->dirX = info->dirX * cos(-info->rotationSpeed) - info->dirY * sin(-info->rotationSpeed);
-		info->dirY = oldDirX * sin(-info->rotationSpeed) + info->dirY * cos(-info->rotationSpeed);
-		double	oldPlaneX = info->planeX;
-		info->planeX = info->planeX * cos(-info->rotationSpeed) - info->planeY * sin(-info->rotationSpeed);
-		info->planeY = oldPlaneX * sin(-info->rotationSpeed) + info->planeY * cos(-info->rotationSpeed);
-	}
-	if (key == KEY_ESC)
-		exit(0);
 	return (0);
 }

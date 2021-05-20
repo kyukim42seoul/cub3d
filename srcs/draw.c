@@ -28,8 +28,8 @@ static void	draw_wall(t_hub *info, t_var *var)
 		var->texY = (double)(var->y - var->drawStart) / var->lineHeight * 63;
 //		var->texPos += var->step;
 		var->color = info->texture[var->texNum][texHeight * var->texY + var->texX];
-//		if (var->side == 1)
-//			var->color = (var->color >> 1) & 8355711;
+		if (var->side == 1)
+			var->color = (var->color >> 1) & 8355711;
 		info->buf[var->y][var->x] = var->color;
 		var->y++;
 	}
@@ -39,4 +39,5 @@ void	draw_hub(t_hub *info, t_var *var)
 {
 	draw_background(info, var);
 	draw_wall(info, var);
+	draw_sprite(info);
 }

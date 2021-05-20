@@ -55,6 +55,16 @@ static void	free_structure(t_hub *info)
 	free(info->graphic);
 }
 */
+
+int	main_loop(t_hub *info)
+{
+	key_update(info);
+	dda(info);
+	draw_sprite(info);
+	draw_image(info);
+	return (0);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_hub		info;
@@ -68,20 +78,31 @@ int	main(int argc, char *argv[])
 	fd = open(argv[1], O_RDONLY);
 	info.graphic = malloc(sizeof(t_gdata));
 	reset_info(&info);
+	info.sprite = (t_sprite *)malloc(sizeof(t_sprite) * 3);
 	start_parsing(fd, &info.map, &info);
-/*
+/*-----------------------------for test
 	if (info.error == 0)
 	{
 		print_structure(&info);
-//		print_map(info.map);
+		print_map(info.map);
 	}
 	else
 		printf("%s\n", info.error_message);
-*/
+-----------------------------*/
 	info.mlx = mlx_init();
 //	mlx_get_screen_size(info.mlx, &info.screenwide, &info.screenheight);
+/*-----------------------------for test
+	int			check = 0;
+	printf("%d\n", info.number_of_sprite);
+	while (check < info.number_of_sprite)
+	{
+		printf("%d %f %f\n", check, info.sprite[check].x, info.sprite[check].y);
+		check++;
+	}
+-----------------------------*/
 	info.screenwide = info.graphic->x_render_size;
 	info.screenheight = info.graphic->y_render_size;
+	info.z = (double *)malloc(sizeof(double) * info.graphic->x_render_size);
 	set_texture_buf(&info);
 	set_screen_buf(&info);
 	load_texture(&info);
@@ -110,8 +131,10 @@ int	main(int argc, char *argv[])
 	info.win = mlx_new_window(info.mlx, info.screenwide, info.screenheight, "cub3D");
 	info.image.img = mlx_new_image(info.mlx, info.screenwide, info.screenheight);
 	info.image.addr = (int *)mlx_get_data_addr(info.image.img, &info.image.bits_per_pixel, &info.image.line_length, &info.image.endian);
+
 	mlx_loop_hook(info.mlx, &main_loop, &info);
 	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
+	mlx_hook(info.win, X_EVENT_KEY_RELEASE, 0, &key_release, &info);
 	mlx_loop(info.mlx);
 //	free_structure(&info);
 	return (0);
