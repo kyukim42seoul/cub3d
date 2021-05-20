@@ -1,6 +1,6 @@
 NAME = cub3D
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror $(DEBUGF)
+CFLAGS = -Wall -Wextra -Werror $(DEBUGF) -fsanitize=address
 DEBUGF = -g3
 MLX = -L . -lmlx
 GNL = srcs/Get_Next_Line/gnl.a

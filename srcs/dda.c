@@ -108,7 +108,8 @@ int	dda(t_hub *info)
 		var.y = var.drawStart;
 		if (var.drawStart < 0)
 			var.y = 0;
-		draw_hub(info, &var);
+		draw_background(info, &var);
+		draw_wall(info, &var);
 		var.x++;
 	}
 	return (0);

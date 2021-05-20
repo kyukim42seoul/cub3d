@@ -19,8 +19,6 @@ static void	set_sprites_array(t_hub *info)
 
 void	draw_sprite(t_hub *info)
 {
-	int		check_cntX = 0;
-	int		check_cntY = 0;
 	int		index;
 	int		sprite_screenX;
 	int		sprite_height;
@@ -45,14 +43,19 @@ void	draw_sprite(t_hub *info)
 	set_sprites_array(info);
 	while (index < info->number_of_sprite)
 	{
-//		printf("index : %d\n", index);
 		spriteX = info->sprite[index].x - info->posX;
 		spriteY = info->sprite[index].y - info->posY;
 		invdet = 1.0 / (info->planeX * info->dirY - info->dirX * info->planeY);
 		transformX = invdet * (info->dirY * spriteX - info->dirX * spriteY);
 		transformY = invdet * (-info->planeY * spriteX  + info->planeX * spriteY);
+/*
+		if (transformY < 0.05 && transformY >= 0)
+			transformY = 0.01;
+		else if (transformY > -0.05 && transformY < 0)
+			transformY = -0.01;
+*/
 		sprite_screenX = (int)((info->graphic->x_render_size / 2) * (1 + transformX / transformY));
-
+//		printf("%f %d\n", transformY, sprite_screenX);
 		sprite_height = abs((int)(info->graphic->y_render_size / transformY)); //transformY 에 왜 괄호가 있을까? 구현 후 확인.
 		draw_startY = -sprite_height / 2 + info->graphic->y_render_size / 2;
 		if (draw_startY < 0)
@@ -70,7 +73,6 @@ void	draw_sprite(t_hub *info)
 			draw_endX = info->graphic->x_render_size - 1;
 
 		stripe = draw_startX;
-		printf("draw_X : %d ~ %d draw_Y : %d ~ %d ", draw_startX, draw_endX, draw_startY, draw_endY);
 //-------------------------------------------------------up : set_var | down : draw_stripe
 		while (stripe < draw_endX)
 		{
@@ -85,14 +87,11 @@ void	draw_sprite(t_hub *info)
 					color = info->texture[4][texY * texWidth + texX];
 					if ((color & 0x00FFFFFF) != 0)
 						info->buf[y][stripe] = color;
-					check_cntY++;
 					y++;
 				}
 			}
-			check_cntX++;
 			stripe++;
 		}
-		printf("X : %d Y : %d\n", check_cntX, check_cntY);
 		index++;
 	}
 }

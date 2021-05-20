@@ -4,15 +4,15 @@ SO ./srcs/images/ft_textures/wall_s.xpm
 WE ./srcs/images/ft_textures/wall_w.xpm
 EA ./srcs/images/ft_textures/wall_e.xpm
 S ./srcs/images/origin_textures/sprite_1.xpm
-F 255,0,0
-C 0,255,0
+F 139,99,49
+C 60,194,255
 
 1111111111111
 1000000000001
-100S000011111
-1000000000001
+1000000011111
+100000E000001
 1001000002001
-1001000000001
-1001000000001
+1001000002001
+1001000002001
 1111111111111
 

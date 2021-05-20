@@ -102,6 +102,7 @@ int	main(int argc, char *argv[])
 -----------------------------*/
 	info.screenwide = info.graphic->x_render_size;
 	info.screenheight = info.graphic->y_render_size;
+	printf("start: %d\n", info.screenheight);
 	info.z = (double *)malloc(sizeof(double) * info.graphic->x_render_size);
 	set_texture_buf(&info);
 	set_screen_buf(&info);

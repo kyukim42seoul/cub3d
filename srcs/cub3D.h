@@ -84,9 +84,11 @@ typedef struct s_gdata
 	int	f_red;
 	int	f_green;
 	int	f_blue;
+	int	floor_color;
 	int	c_red;
 	int	c_green;
 	int	c_blue;
+	int	ceiling_color;
 }	t_gdata;
 
 typedef struct s_idata
@@ -142,9 +144,9 @@ void	print_graphic(t_gdata *graphic_info);
 void	set_pixel_color(t_hub *info, int x, int y, int color);
 void	set_texture_buf(t_hub *info);
 void	set_screen_buf(t_hub *info);
-void	draw_image(t_hub *info);
 void	load_image(t_hub *info, int *texture, char *path, t_idata *image);
 void	load_texture(t_hub *info);
+void	combine_color(int *color, int red, int green, int blue);
 
 //dda.c + 5 static
 int	dda(t_hub *info);
@@ -163,7 +165,9 @@ void	parse_map(int fd, char ***map, t_hub *info);
 void	start_parsing(int fd, char ***map, t_hub *info);
 
 //draw.c
-void	draw_hub(t_hub *info, t_var *var);
+void	draw_wall(t_hub *info, t_var *var);
+void	draw_background(t_hub *info, t_var *var);
+void	draw_image(t_hub *info);
 
 //sprite.c
 void	draw_sprite(t_hub *info);

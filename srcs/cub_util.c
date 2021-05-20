@@ -1,22 +1,10 @@
 #include "cub3D.h"
 
-void	draw_image(t_hub *info)
+void	combine_color(int *color, int red, int green, int blue)
 {
-	int	y;
-	int	x;
-
-	y = 0;
-	while (y < info->screenheight)
-	{
-		x = 0;
-		while (x < info->screenwide)
-		{
-			info->image.addr[y * info->image.line_length / 4 + x] = info->buf[y][x];
-			x++;
-		}
-		y++;
-	}
-	mlx_put_image_to_window(info->mlx, info->win, info->image.img, 0, 0);
+	*color |= red << 16;
+	*color |= green << 8;
+	*color |= blue;
 }
 
 void	load_image(t_hub *info, int *texture, char *path, t_idata *image)
@@ -67,13 +55,12 @@ void	set_screen_buf(t_hub *info)
 	int	temp;
 
 	temp = 0;
-	info->buf = (int **)malloc(sizeof(int *) * info->screenheight + 1);
+	info->buf = (int **)malloc(sizeof(int *) * info->screenheight);
 	while (temp < info->screenheight)
 	{
 		info->buf[temp] = (int *)malloc(sizeof(int) * info->screenwide);
 		temp++;
 	}
-	info->buf[temp] = NULL;
 }
 
 void	free_texture_buf(t_hub *info)
