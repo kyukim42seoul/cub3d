@@ -5,6 +5,7 @@ static void	sort_sprites(t_sprite *sprite, int *number_of_sprites)
 
 }
 */
+/*
 static void	set_sprites_array(t_hub *info)
 {
 	int	index;
@@ -16,10 +17,10 @@ static void	set_sprites_array(t_hub *info)
 		index++;
 	}
 }
-
+*/
 void	draw_sprite(t_hub *info)
 {
-	int		index;
+//	int		index;
 	int		sprite_screenX;
 	int		sprite_height;
 	int		draw_startY;
@@ -38,13 +39,15 @@ void	draw_sprite(t_hub *info)
 	double	invdet;
 	double	transformX;
 	double	transformY;
+	t_sprite_list	*start;
 
-	index = 0;
-	set_sprites_array(info);
-	while (index < info->number_of_sprite)
+	start = info->sprite_list->next;
+//	index = 0;
+//	set_sprites_array(info);
+	while (start)
 	{
-		spriteX = info->sprite[index].x - info->posX;
-		spriteY = info->sprite[index].y - info->posY;
+		spriteX = start->x - info->posX;
+		spriteY = start->y - info->posY;
 		invdet = 1.0 / (info->planeX * info->dirY - info->dirX * info->planeY);
 		transformX = invdet * (info->dirY * spriteX - info->dirX * spriteY);
 		transformY = invdet * (-info->planeY * spriteX  + info->planeX * spriteY);
@@ -92,6 +95,6 @@ void	draw_sprite(t_hub *info)
 			}
 			stripe++;
 		}
-		index++;
+		start = start->next;
 	}
 }

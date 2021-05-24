@@ -16,6 +16,7 @@ OBJECTS =	srcs/main.o \
 	srcs/draw.o \
 	srcs/sprite.o \
 	srcs/key.o \
+	srcs/handle_list.o \
 
 all : gnl libft mlx $(NAME)
 

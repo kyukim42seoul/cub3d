@@ -25,10 +25,10 @@
 
 typedef struct s_sprite_list
 {
-	int						number;
-	int						spriteX;
-	int						spriteY;
+	double					x;
+	double					y;
 	double					distance;
+	struct s_sprite_list	*prev;
 	struct s_sprite_list	*next;
 }	t_sprite_list;
 
@@ -115,6 +115,7 @@ typedef struct info_hub
 	t_gdata	*graphic;
 	t_idata	image;
 	t_sprite	*sprite;
+	t_sprite_list	*sprite_list;
 	t_flag	flag;
 	double	posX;
 	double	posY;
@@ -177,5 +178,11 @@ int	key_update(t_hub *info);
 int	key_press(int key, t_hub *info);
 int	key_release(int key, t_hub *info);
 
+//handle_list.c + 5 static
+t_sprite_list	*find_start(t_sprite_list *cur); // 결과 확인용으로만 쓰고 나중에 지울 것
+void	print_sprite_list(t_sprite_list *start); // 결과 확인용으로만 쓰고 나중에 지울 것
+void	sort_sprite_node(t_sprite_list *start);
+void	add_back_sprite_node(t_sprite_list *list, t_sprite_list *new);
+t_sprite_list	*new_sprite_node(void);
 
 #endif

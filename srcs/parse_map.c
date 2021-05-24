@@ -81,14 +81,20 @@ static int	check_map_start(char *line)
 static void	find_sprite(t_hub *info, char *line, int map_y)
 {
 	int	index;
+	t_sprite_list	*new;
 
 	index = 0;
+	if (info->sprite_list == NULL)
+		info->sprite_list = new_sprite_node();
 	while (line[index])
 	{
 		if (line[index] == '2')
 		{
-			info->sprite[info->number_of_sprite].x = index + 0.5;
-			info->sprite[info->number_of_sprite].y = map_y + 0.5;
+			new = new_sprite_node();
+			new->x = index + 0.5;
+			new->y = map_y + 0.5;
+			new->distance = (info->posX - new->x) * (info->posX - new->x) + (info->posY - new->y) * (info->posY - new->y);
+			add_back_sprite_node(info->sprite_list, new);
 			info->number_of_sprite++;
 		}
 		index++;
@@ -125,7 +131,6 @@ void	parse_map(int fd, char ***map, t_hub *info)
 		}
 		temp = ft_strdup(line);
 		count += find_character(map_y, temp, info);
-		find_sprite(info, line, map_y);
 //--------------------
 
 //--------------------
@@ -150,6 +155,7 @@ void	parse_map(int fd, char ***map, t_hub *info)
 		free(head);
 		while (current->next)
 		{
+			find_sprite(info, (char *)current->content, index);
 			(*map)[index] = ft_strdup((char *)current->content);
 			old = current;
 			current = current->next;
@@ -157,6 +163,8 @@ void	parse_map(int fd, char ***map, t_hub *info)
 			free(old);
 			index++;
 		}
+		sort_sprite_node(info->sprite_list->next);
+		print_sprite_list(info->sprite_list->next);
 		(*map)[index] = NULL;
 	}
 }

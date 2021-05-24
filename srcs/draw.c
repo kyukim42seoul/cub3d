@@ -29,8 +29,6 @@ void	draw_image(t_hub *info)
 void	draw_background(t_hub *info, t_var *var)
 {
 	int	eyesight = info->screenheight / 2;
-//	int	sky_color = 0x0000FF66;
-//	int	floor_color = 0x00FF8800;
 	int	y;
 
 	y = 0;

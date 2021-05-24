@@ -121,6 +121,7 @@ void	reset_info(t_hub *info)
 	info->flag.key_s = 0;
 	info->flag.key_a = 0;
 	info->flag.key_d = 0;
+	info->sprite_list = NULL;
 }
 
 void	print_graphic(t_gdata *graphic_info)
