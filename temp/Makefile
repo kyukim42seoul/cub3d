@@ -17,6 +17,8 @@ OBJECTS =	srcs/main.o \
 	srcs/sprite.o \
 	srcs/key.o \
 	srcs/handle_list.o \
+	srcs/bitmap.o \
+	srcs/map_efficiency.o \
 
 all : gnl libft mlx $(NAME)
 

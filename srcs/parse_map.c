@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-static int	find_character(int map_y, char *line, t_hub *info)
+static int	find_character(int map_height, char *line, t_hub *info)
 {
 	static int	count;
 	char	*temp;
@@ -10,7 +10,7 @@ static int	find_character(int map_y, char *line, t_hub *info)
 	if (ft_strchr(line, 'N'))
 	{
 		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'N')) + 0.5);
-		info->posY = (double)map_y + 0.5;
+		info->posY = (double)map_height + 0.5;
 		info->dirX = 0;
 		info->dirY = -1;
 		info->planeX = 0.66;
@@ -22,7 +22,7 @@ static int	find_character(int map_y, char *line, t_hub *info)
 	else if (ft_strchr(line,'S'))
 	{
 		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'S')) + 0.5);
-		info->posY = (double)map_y + 0.5;
+		info->posY = (double)map_height + 0.5;
 		info->dirX = 0;
 		info->dirY = 1;
 		info->planeX = -0.66;
@@ -34,7 +34,7 @@ static int	find_character(int map_y, char *line, t_hub *info)
 	else if (ft_strchr(line, 'W'))
 	{
 		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'W')) + 0.5);
-		info->posY = (double)map_y+ 0.5;
+		info->posY = (double)map_height+ 0.5;
 		info->dirX = -1;
 		info->dirY = 0;
 		info->planeX = 0;
@@ -46,7 +46,7 @@ static int	find_character(int map_y, char *line, t_hub *info)
 	else if (ft_strchr(line, 'E'))
 	{
 		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'E'))+ 0.5);
-		info->posY = (double)map_y+ 0.5;
+		info->posY = (double)map_height+ 0.5;
 		info->dirX = 1;
 		info->dirY = 0;
 		info->planeX = 0;
@@ -62,7 +62,7 @@ static int	find_character(int map_y, char *line, t_hub *info)
 	}
 	return (count);
 }
-
+/*
 static int	check_map_start(char *line)
 {
 	int	index;
@@ -77,8 +77,8 @@ static int	check_map_start(char *line)
 	}
 	return (0);
 }
-
-static void	find_sprite(t_hub *info, char *line, int map_y)
+*/
+static void	find_sprite(t_hub *info, char *line, int map_height)
 {
 	int	index;
 	t_sprite_list	*new;
@@ -92,7 +92,7 @@ static void	find_sprite(t_hub *info, char *line, int map_y)
 		{
 			new = new_sprite_node();
 			new->x = index + 0.5;
-			new->y = map_y + 0.5;
+			new->y = map_height + 0.5;
 			new->distance = (info->posX - new->x) * (info->posX - new->x) + (info->posY - new->y) * (info->posY - new->y);
 			add_back_sprite_node(info->sprite_list, new);
 			info->number_of_sprite++;
@@ -101,10 +101,21 @@ static void	find_sprite(t_hub *info, char *line, int map_y)
 	}
 }
 
+static char	*line_initialize(int len)
+{
+	char	*new_line;
+
+	new_line = (char *)malloc(sizeof(char) * len + 1);
+	if (!new_line)
+		return (NULL);	// error check point
+	ft_memset(new_line, ' ', len);
+	new_line[len] = '\0';
+	return (new_line);
+}
+
 void	parse_map(int fd, char ***map, t_hub *info)
 {
 	int	map_x;
-	int	map_y;
 	int	index;
 	int	count;
 	char	*line;
@@ -114,14 +125,15 @@ void	parse_map(int fd, char ***map, t_hub *info)
 	t_list	*old;
 
 	map_x = 0;
-	map_y = 0;
 	index = 0;
 	line = 0;
 	count = 0;
 	head = ft_lstnew(NULL);
 	while (get_next_line(fd, &line) == 1 && info->error == 0)
 	{
-		if (head->next == NULL)
+		if ((int)ft_strlen(line) > info->map_width)
+			info->map_width = ft_strlen(line);
+/*		if (head->next == NULL)
 		{
 			if (check_map_start(line) < 0)
 			{
@@ -129,44 +141,36 @@ void	parse_map(int fd, char ***map, t_hub *info)
 				info->error++;
 			}
 		}
+		*/
 		temp = ft_strdup(line);
-		count += find_character(map_y, temp, info);
-//--------------------
-
-//--------------------
+		count += find_character(info->map_height, temp, info);
 		current = ft_lstnew((void *)temp);
 		if ((int)ft_strlen(current->content) > map_x)
 			map_x = ft_strlen(current->content);
-		map_y++;
+		info->map_height++;
 		ft_lstadd_back(&head, current);
 		free(line);
 	}
 	free(line);
 	if (count != 1)
+		return (error_function("Incollect_Character_Number"));
+	*map = (char **)malloc(sizeof(char *) * (info->map_height + 1));
+	current = head->next;
+	free(head);
+	while (current)
 	{
-		info->error++;
-		info->error_message = ft_strdup("Incorrect character number\n");
-		printf("count : %d\n", count);
+		find_sprite(info, (char *)current->content, index);
+		(*map)[index] = line_initialize(info->map_width);
+		ft_memcpy((*map)[index], (char *)current->content, ft_strlen((char *)current->content));
+		old = current;
+		current = current->next;
+		free(old->content);
+		free(old);
+		index++;
 	}
-	if (info->error == 0)
-	{
-		*map = (char **)malloc(sizeof(char *) * (map_y + 1));
-		current = head->next;
-		free(head);
-		while (current->next)
-		{
-			find_sprite(info, (char *)current->content, index);
-			(*map)[index] = ft_strdup((char *)current->content);
-			old = current;
-			current = current->next;
-			free(old->content);
-			free(old);
-			index++;
-		}
-		sort_sprite_node(info->sprite_list->next);
-		print_sprite_list(info->sprite_list->next);
-		(*map)[index] = NULL;
-	}
+	(*map)[index] = NULL;
+	print_map((*map));
+	check_boundary(info, (*map));
 }
 
 

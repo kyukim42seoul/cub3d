@@ -1,26 +1,7 @@
 #include "cub3D.h"
-/*
-static void	sort_sprites(t_sprite *sprite, int *number_of_sprites)
-{
 
-}
-*/
-/*
-static void	set_sprites_array(t_hub *info)
-{
-	int	index;
-
-	index = 0;
-	while (index < info->number_of_sprite)
-	{
-		info->sprite[index].distance = ((info->posX - info->sprite[index].x) * (info->posX - info->sprite[index].x)) + ((info->posY - info->sprite[index].y) * (info->posY - info->sprite[index].y));
-		index++;
-	}
-}
-*/
 void	draw_sprite(t_hub *info)
 {
-//	int		index;
 	int		sprite_screenX;
 	int		sprite_height;
 	int		draw_startY;
@@ -42,8 +23,6 @@ void	draw_sprite(t_hub *info)
 	t_sprite_list	*start;
 
 	start = info->sprite_list->next;
-//	index = 0;
-//	set_sprites_array(info);
 	while (start)
 	{
 		spriteX = start->x - info->posX;
@@ -51,14 +30,7 @@ void	draw_sprite(t_hub *info)
 		invdet = 1.0 / (info->planeX * info->dirY - info->dirX * info->planeY);
 		transformX = invdet * (info->dirY * spriteX - info->dirX * spriteY);
 		transformY = invdet * (-info->planeY * spriteX  + info->planeX * spriteY);
-/*
-		if (transformY < 0.05 && transformY >= 0)
-			transformY = 0.01;
-		else if (transformY > -0.05 && transformY < 0)
-			transformY = -0.01;
-*/
 		sprite_screenX = (int)((info->graphic->x_render_size / 2) * (1 + transformX / transformY));
-//		printf("%f %d\n", transformY, sprite_screenX);
 		sprite_height = abs((int)(info->graphic->y_render_size / transformY)); //transformY 에 왜 괄호가 있을까? 구현 후 확인.
 		draw_startY = -sprite_height / 2 + info->graphic->y_render_size / 2;
 		if (draw_startY < 0)

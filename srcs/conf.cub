@@ -1,18 +1,27 @@
 R 800 600
+S ./srcs/images/origin_textures/sprite_1.xpm
 NO ./srcs/images/ft_textures/wall_n.xpm
 SO ./srcs/images/ft_textures/wall_s.xpm
-WE ./srcs/images/ft_textures/wall_w.xpm
 EA ./srcs/images/ft_textures/wall_e.xpm
-S ./srcs/images/origin_textures/sprite_1.xpm
+WE ./srcs/images/ft_textures/wall_w.xpm
 F 139,99,49
 C 60,194,255
 
-1111111111111
-1000000000001
-1000000011111
-100000E000001
-1001000002001
-1001000002001
-1001000002001
+    1111111111111
+    1000000000001
+    1000000011111
+111110S000001
+10010000022201
+1001000002201
+10010000022201
 1111111111111
 
+
+
+
+
+
+11111111
+10000201
+10000001
+11111111

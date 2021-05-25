@@ -72,22 +72,20 @@ typedef struct s_var
 
 typedef struct s_gdata
 {
-	int	x_render_size;
-	int	y_render_size;
 	char	*path_to_the_north_texture;
 	char	*path_to_the_south_texture;
 	char	*path_to_the_west_texture;
 	char	*path_to_the_east_texture;
 	char	*path_to_the_sprite_texture;
-	char	*path_to_the_sky_texture;
-	char	*path_to_the_floor_texture;
-	int	f_red;
-	int	f_green;
-	int	f_blue;
+	int	x_render_size;
+	int	y_render_size;
+//	int	red;
+//	int	green;
+//	int	blue;
 	int	floor_color;
-	int	c_red;
-	int	c_green;
-	int	c_blue;
+//	int	c_red;
+//	int	c_green;
+//	int	c_blue;
 	int	ceiling_color;
 }	t_gdata;
 
@@ -102,19 +100,10 @@ typedef struct s_idata
 	int		img_width;
 }	t_idata;
 
-typedef struct s_sprite
-{
-	int	order;
-	double	x;
-	double	y;
-	double	distance;
-}	t_sprite;
-
 typedef struct info_hub
 {
 	t_gdata	*graphic;
 	t_idata	image;
-	t_sprite	*sprite;
 	t_sprite_list	*sprite_list;
 	t_flag	flag;
 	double	posX;
@@ -136,6 +125,9 @@ typedef struct info_hub
 	int	**buf;
 	double	*z;
 	int	number_of_sprite;
+	int	save;
+	int	map_width;
+	int	map_height;
 }	t_hub;
 
 //cub_util.c
@@ -148,12 +140,15 @@ void	set_screen_buf(t_hub *info);
 void	load_image(t_hub *info, int *texture, char *path, t_idata *image);
 void	load_texture(t_hub *info);
 void	combine_color(int *color, int red, int green, int blue);
+void	error_function(char *msg);
 
 //dda.c + 5 static
 int	dda(t_hub *info);
 
 //main.c + main + 1 static print_map
 int	main_loop(t_hub *info);
+void	set_sprite_distance(t_hub *info, t_sprite_list *node);
+void	print_map(char **map);
 
 //parse_graphic.c + 3 static compare_text, free_by_count, cub_atoi
 int	check_structure(t_gdata *graphic);
@@ -184,5 +179,11 @@ void	print_sprite_list(t_sprite_list *start); // 결과 확인용으로만 쓰�
 void	sort_sprite_node(t_sprite_list *start);
 void	add_back_sprite_node(t_sprite_list *list, t_sprite_list *new);
 t_sprite_list	*new_sprite_node(void);
+
+//bitmap.c + 3 static
+void	make_bitmap(char **argv, t_hub *info, int fd);
+
+//map_efficiency.c
+void	check_boundary(t_hub *info, char **map);
 
 #endif

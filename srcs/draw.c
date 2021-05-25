@@ -1,12 +1,5 @@
 #include "cub3D.h"
-/*
-void	draw_background_v2(t_hub *info)
-{
-	int	eyesight;
 
-	eyesight = info->screenheight / 2;
-}
-*/
 void	draw_image(t_hub *info)
 {
 	int	y;
@@ -23,7 +16,9 @@ void	draw_image(t_hub *info)
 		}
 		y++;
 	}
+	mlx_sync(1, info->image.img);
 	mlx_put_image_to_window(info->mlx, info->win, info->image.img, 0, 0);
+	mlx_sync(3, info->win);
 }
 
 void	draw_background(t_hub *info, t_var *var)

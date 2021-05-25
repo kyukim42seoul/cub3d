@@ -1,17 +1,18 @@
 #include "cub3D.h"
-/*
-static void	print_map(char **map)
+
+void	print_map(char **map)
 {
 	int	index;
 
 	index = 0;
 	while (map[index])
 	{
-		printf("%s\n", map[index]);
+		printf("|%s|\n", map[index]);
 		index++;
 	}
+	printf("|%s|\n", map[index]);
 }
-*/
+
 /*
 static void	free_structure(t_hub *info)
 {
@@ -56,83 +57,91 @@ static void	free_structure(t_hub *info)
 }
 */
 
+void	set_sprite_distance(t_hub *info, t_sprite_list *node)
+{
+	while (node)
+	{
+		node->distance = (info->posX - node->x) * (info->posX - node->x) + (info->posY - node->y) * (info->posY - node->y);
+		node = node->next;
+	}
+}
+
 int	main_loop(t_hub *info)
 {
 	key_update(info);
 	dda(info);
+	set_sprite_distance(info, info->sprite_list->next);
+	sort_sprite_node(info->sprite_list->next);
 	draw_sprite(info);
 	draw_image(info);
 	return (0);
+}
+
+static	int	compare_string(char *dst, char *src)
+{
+	while (*dst)
+	{
+		if (*dst == *src)
+		{
+			dst++;
+			src++;
+		}
+		else
+			return (0);
+	}
+	return (1);
+}
+
+static	int	check_arguments(t_hub *info, int argc, char **argv)
+{
+	int	save;
+	char	*temp;
+
+	save = 0;
+	temp = argv[1] + ft_strlen(argv[1]) - 4;
+	if (argc == 2)
+	{
+		if (!compare_string(temp, ".cub"))
+		{
+			info->error_message = ft_strdup("Incollect .cub file\n");
+			return (0);
+		}
+	}
+	else if (argc == 3)
+	{
+		if (compare_string(argv[2], "--save") && ft_strlen(argv[2]) == 6)
+			save = 1;
+	}
+	return (save);
 }
 
 int	main(int argc, char *argv[])
 {
 	t_hub		info;
 	int			fd;
-	int			index;
 
-	index = 0;
-	info.map = 0;
-	if (argc != 2)
-		return (0);
-	fd = open(argv[1], O_RDONLY);
-	info.graphic = malloc(sizeof(t_gdata));
 	reset_info(&info);
-	info.sprite = (t_sprite *)malloc(sizeof(t_sprite) * 3);
+	fd = 0;
+	if (argc < 2 || argc > 3)
+		return (0);
+	if (check_arguments(&info, argc, argv))
+	{
+		make_bitmap(argv, &info, fd);
+		return (0);
+	}
+	fd = open(argv[1], O_RDONLY);
+//	info.sprite = (t_sprite *)malloc(sizeof(t_sprite) * 3);
 	start_parsing(fd, &info.map, &info);
-/*-----------------------------for test
-	if (info.error == 0)
-	{
-		print_structure(&info);
-		print_map(info.map);
-	}
-	else
-		printf("%s\n", info.error_message);
------------------------------*/
 	info.mlx = mlx_init();
-//	mlx_get_screen_size(info.mlx, &info.screenwide, &info.screenheight);
-/*-----------------------------for test
-	int			check = 0;
-	printf("%d\n", info.number_of_sprite);
-	while (check < info.number_of_sprite)
-	{
-		printf("%d %f %f\n", check, info.sprite[check].x, info.sprite[check].y);
-		check++;
-	}
------------------------------*/
 	info.screenwide = info.graphic->x_render_size;
 	info.screenheight = info.graphic->y_render_size;
-	printf("start: %d\n", info.screenheight);
 	info.z = (double *)malloc(sizeof(double) * info.graphic->x_render_size);
 	set_texture_buf(&info);
 	set_screen_buf(&info);
 	load_texture(&info);
-
-//-------------------------
-/*
-	t_idata		test;
-	void		*win_2;
-	int			y = 0;
-	int			x = 0;
-	win_2 = mlx_new_window(info.mlx, 100, 100, "test");
-	test.img = mlx_new_image(info.mlx, 100, 100);
-	test.addr = (int *)mlx_get_data_addr(test.img, &test.bits_per_pixel, &test.line_length, &test.endian);
-	while (y < 64)
-	{
-		while (x < 64)
-		{
-			test.addr[y * 64 + x] = info.texture[0][y * 64 + x];
-			x++;
-		}
-		y++;
-	}
-	mlx_put_image_to_window(info.mlx, win_2, test.img, 0, 0);
-*/
-//-------------------------
 	info.win = mlx_new_window(info.mlx, info.screenwide, info.screenheight, "cub3D");
 	info.image.img = mlx_new_image(info.mlx, info.screenwide, info.screenheight);
 	info.image.addr = (int *)mlx_get_data_addr(info.image.img, &info.image.bits_per_pixel, &info.image.line_length, &info.image.endian);
-
 	mlx_loop_hook(info.mlx, &main_loop, &info);
 	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
 	mlx_hook(info.win, X_EVENT_KEY_RELEASE, 0, &key_release, &info);
