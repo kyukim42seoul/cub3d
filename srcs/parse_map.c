@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-static int	find_character(int map_height, char *line, t_hub *info)
+static int	find_character(int map_height, char *line, t_character *c)
 {
 	static int	count;
 	char	*temp;
@@ -9,57 +9,54 @@ static int	find_character(int map_height, char *line, t_hub *info)
 	temp = 0;
 	if (ft_strchr(line, 'N'))
 	{
-		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'N')) + 0.5);
-		info->posY = (double)map_height + 0.5;
-		info->dirX = 0;
-		info->dirY = -1;
-		info->planeX = 0.66;
-		info->planeY = 0;
+		c->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'N')) + 0.5);
+		c->posY = (double)map_height + 0.5;
+		c->dirX = 0;
+		c->dirY = -1;
+		c->planeX = 0.66;
+		c->planeY = 0;
 		temp = ft_strchr(line, 'N');
 		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line,'S'))
 	{
-		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'S')) + 0.5);
-		info->posY = (double)map_height + 0.5;
-		info->dirX = 0;
-		info->dirY = 1;
-		info->planeX = -0.66;
-		info->planeY = 0;
+		c->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'S')) + 0.5);
+		c->posY = (double)map_height + 0.5;
+		c->dirX = 0;
+		c->dirY = 1;
+		c->planeX = -0.66;
+		c->planeY = 0;
 		temp = ft_strchr(line, 'S');
 		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line, 'W'))
 	{
-		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'W')) + 0.5);
-		info->posY = (double)map_height+ 0.5;
-		info->dirX = -1;
-		info->dirY = 0;
-		info->planeX = 0;
-		info->planeY = -0.66;
+		c->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'W')) + 0.5);
+		c->posY = (double)map_height+ 0.5;
+		c->dirX = -1;
+		c->dirY = 0;
+		c->planeX = 0;
+		c->planeY = -0.66;
 		temp = ft_strchr(line, 'W');
 		*temp = '0';
 		count++;
 	}
 	else if (ft_strchr(line, 'E'))
 	{
-		info->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'E'))+ 0.5);
-		info->posY = (double)map_height+ 0.5;
-		info->dirX = 1;
-		info->dirY = 0;
-		info->planeX = 0;
-		info->planeY = 0.66;
+		c->posX = (double)(ft_strlen(line) - ft_strlen(ft_strchr(line, 'E'))+ 0.5);
+		c->posY = (double)map_height+ 0.5;
+		c->dirX = 1;
+		c->dirY = 0;
+		c->planeX = 0;
+		c->planeY = 0.66;
 		temp = ft_strchr(line, 'E');
 		*temp = '0';
 		count++;
 	}
 	if (count > 1)
-	{
-		info->error++;
-		info->error_message = ft_strdup("Too many characters\n");
-	}
+		error_function("Too many characters");
 	return (count);
 }
 /*
@@ -93,7 +90,7 @@ static void	find_sprite(t_hub *info, char *line, int map_height)
 			new = new_sprite_node();
 			new->x = index + 0.5;
 			new->y = map_height + 0.5;
-			new->distance = (info->posX - new->x) * (info->posX - new->x) + (info->posY - new->y) * (info->posY - new->y);
+			new->distance = (info->c.posX - new->x) * (info->c.posX - new->x) + (info->c.posY - new->y) * (info->c.posY - new->y);
 			add_back_sprite_node(info->sprite_list, new);
 			info->number_of_sprite++;
 		}
@@ -143,7 +140,7 @@ void	parse_map(int fd, char ***map, t_hub *info)
 		}
 		*/
 		temp = ft_strdup(line);
-		count += find_character(info->map_height, temp, info);
+		count += find_character(info->map_height, temp, &info->c);
 		current = ft_lstnew((void *)temp);
 		if ((int)ft_strlen(current->content) > map_x)
 			map_x = ft_strlen(current->content);

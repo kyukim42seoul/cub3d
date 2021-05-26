@@ -13,55 +13,11 @@ void	print_map(char **map)
 	printf("|%s|\n", map[index]);
 }
 
-/*
-static void	free_structure(t_hub *info)
-{
-	int	index;
-
-	index = 0;
-	free(info->graphic->path_to_the_north_texture);
-	free(info->graphic->path_to_the_south_texture);
-	free(info->graphic->path_to_the_west_texture);
-	free(info->graphic->path_to_the_east_texture);
-	while (info->map[index])
-	{
-		free(info->map[index]);
-		index++;
-	}
-	free(info->graphic);
-}
-*/
-/*
-static void	free_structure(t_hub *info)
-{
-	int	index;
-
-	index = 0;
-	free(info->graphic->path_to_the_north_texture);
-	free(info->graphic->path_to_the_south_texture);
-	free(info->graphic->path_to_the_west_texture);
-	free(info->graphic->path_to_the_east_texture);
-	free(info->graphic->path_to_the_sky_texture);
-	free(info->graphic->path_to_the_floor_texture);
-	free(info->graphic->path_to_the_sprite_texture);
-
-	while (info->map[index])
-	{
-		printf("%p %s\n", info->map[index], info->map[index]);
-		free(info->map[index]);
-		index++;
-	}
-	free(info->map[index]);
-	free(info->map);
-	free(info->graphic);
-}
-*/
-
-void	set_sprite_distance(t_hub *info, t_sprite_list *node)
+void	set_sprite_distance(t_character c, t_sprite_list *node)
 {
 	while (node)
 	{
-		node->distance = (info->posX - node->x) * (info->posX - node->x) + (info->posY - node->y) * (info->posY - node->y);
+		node->distance = (c.posX - node->x) * (c.posX - node->x) + (c.posY - node->y) * (c.posY - node->y);
 		node = node->next;
 	}
 }
@@ -70,7 +26,7 @@ int	main_loop(t_hub *info)
 {
 	key_update(info);
 	dda(info);
-	set_sprite_distance(info, info->sprite_list->next);
+	set_sprite_distance(info->c, info->sprite_list->next);
 	sort_sprite_node(info->sprite_list->next);
 	draw_sprite(info);
 	draw_image(info);
@@ -115,37 +71,42 @@ static	int	check_arguments(t_hub *info, int argc, char **argv)
 	return (save);
 }
 
-int	main(int argc, char *argv[])
+static void	basic_process(t_hub info, char **argv)
 {
-	t_hub		info;
-	int			fd;
+	int	fd;
 
-	reset_info(&info);
 	fd = 0;
-	if (argc < 2 || argc > 3)
-		return (0);
-	if (check_arguments(&info, argc, argv))
-	{
-		make_bitmap(argv, &info, fd);
-		return (0);
-	}
 	fd = open(argv[1], O_RDONLY);
-//	info.sprite = (t_sprite *)malloc(sizeof(t_sprite) * 3);
 	start_parsing(fd, &info.map, &info);
 	info.mlx = mlx_init();
-	info.screenwide = info.graphic->x_render_size;
-	info.screenheight = info.graphic->y_render_size;
-	info.z = (double *)malloc(sizeof(double) * info.graphic->x_render_size);
+	info.screenwidth = info.g->x_render_size;
+	info.screenheight = info.g->y_render_size;
+	info.z = (double *)malloc(sizeof(double) * info.g->x_render_size);
 	set_texture_buf(&info);
 	set_screen_buf(&info);
 	load_texture(&info);
-	info.win = mlx_new_window(info.mlx, info.screenwide, info.screenheight, "cub3D");
-	info.image.img = mlx_new_image(info.mlx, info.screenwide, info.screenheight);
-	info.image.addr = (int *)mlx_get_data_addr(info.image.img, &info.image.bits_per_pixel, &info.image.line_length, &info.image.endian);
+	info.win = mlx_new_window(info.mlx, info.screenwidth, info.screenheight, "cub3D");
+	info.img.img = mlx_new_image(info.mlx, info.screenwidth, info.screenheight);
+	info.img.addr = (int *)mlx_get_data_addr(info.img.img, &info.img.bits_per_pixel, &info.img.size_line, &info.img.endian);
 	mlx_loop_hook(info.mlx, &main_loop, &info);
 	mlx_hook(info.win, X_EVENT_KEY_PRESS, 0, &key_press, &info);
 	mlx_hook(info.win, X_EVENT_KEY_RELEASE, 0, &key_release, &info);
 	mlx_loop(info.mlx);
-//	free_structure(&info);
+}
+
+int	main(int argc, char *argv[])
+{
+	t_hub		info;
+
+	reset_hub(&info);
+	if (argc < 2 || argc > 3)
+		return (0);
+	if (check_arguments(&info, argc, argv))
+	{
+		make_bitmap(argv, &info);
+		return (0);
+	}
+	else
+		basic_process(info, argv);
 	return (0);
 }

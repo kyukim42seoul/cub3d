@@ -7,39 +7,39 @@ int	key_update(t_hub *info)
 
 	oldDirX = 0;
 	oldPlaneX = 0;
-	if (info->flag.key_esc == 1)
+	if (info->k.esc == 1)
 		exit(0);
-	if (info->flag.key_w == 1)
+	if (info->k.w == 1)
 	{
-		if (info->map[(int)info->posY][(int)(info->posX + info->dirX * info->moveSpeed)] == '0')
-			info->posX += info->dirX * info->moveSpeed;
-		if (info->map[(int)(info->posY + info->dirY * info->moveSpeed)][(int)info->posX] == '0')
-			info->posY += info->dirY * info->moveSpeed;
+		if (info->map[(int)info->c.posY][(int)(info->c.posX + info->c.dirX * info->c.moveSpeed)] == '0')
+			info->c.posX += info->c.dirX * info->c.moveSpeed;
+		if (info->map[(int)(info->c.posY + info->c.dirY * info->c.moveSpeed)][(int)info->c.posX] == '0')
+			info->c.posY += info->c.dirY * info->c.moveSpeed;
 	}
-	if (info->flag.key_s == 1)
+	if (info->k.s == 1)
 	{
-		if (info->map[(int)info->posY][(int)(info->posX - info->dirX * info->moveSpeed)] == '0')
-			info->posX -= info->dirX * info->moveSpeed;
-		if (info->map[(int)(info->posY - info->dirY * info->moveSpeed)][(int)info->posX] == '0')
-			info->posY -= info->dirY * info->moveSpeed;
+		if (info->map[(int)info->c.posY][(int)(info->c.posX - info->c.dirX * info->c.moveSpeed)] == '0')
+			info->c.posX -= info->c.dirX * info->c.moveSpeed;
+		if (info->map[(int)(info->c.posY - info->c.dirY * info->c.moveSpeed)][(int)info->c.posX] == '0')
+			info->c.posY -= info->c.dirY * info->c.moveSpeed;
 	}
-	if (info->flag.key_a == 1)
+	if (info->k.a == 1)
 	{
-		oldDirX = info->dirX;
-		info->dirX = info->dirX * cos(-info->rotationSpeed) - info->dirY * sin(-info->rotationSpeed);
-		info->dirY = oldDirX * sin(-info->rotationSpeed) + info->dirY * cos(-info->rotationSpeed);
-		oldPlaneX = info->planeX;
-		info->planeX = info->planeX * cos(-info->rotationSpeed) - info->planeY * sin(-info->rotationSpeed);
-		info->planeY = oldPlaneX * sin(-info->rotationSpeed) + info->planeY * cos(-info->rotationSpeed);
+		oldDirX = info->c.dirX;
+		info->c.dirX = info->c.dirX * cos(-info->c.rotationSpeed) - info->c.dirY * sin(-info->c.rotationSpeed);
+		info->c.dirY = oldDirX * sin(-info->c.rotationSpeed) + info->c.dirY * cos(-info->c.rotationSpeed);
+		oldPlaneX = info->c.planeX;
+		info->c.planeX = info->c.planeX * cos(-info->c.rotationSpeed) - info->c.planeY * sin(-info->c.rotationSpeed);
+		info->c.planeY = oldPlaneX * sin(-info->c.rotationSpeed) + info->c.planeY * cos(-info->c.rotationSpeed);
 	}
-	if (info->flag.key_d == 1)
+	if (info->k.d == 1)
 	{
-		oldDirX = info->dirX;
-		info->dirX = info->dirX * cos(info->rotationSpeed) - info->dirY * sin(info->rotationSpeed);
-		info->dirY = oldDirX * sin(info->rotationSpeed) + info->dirY * cos(info->rotationSpeed);
-		oldPlaneX = info->planeX;
-		info->planeX = info->planeX * cos(info->rotationSpeed) - info->planeY * sin(info->rotationSpeed);
-		info->planeY = oldPlaneX * sin(info->rotationSpeed) + info->planeY * cos(info->rotationSpeed);
+		oldDirX = info->c.dirX;
+		info->c.dirX = info->c.dirX * cos(info->c.rotationSpeed) - info->c.dirY * sin(info->c.rotationSpeed);
+		info->c.dirY = oldDirX * sin(info->c.rotationSpeed) + info->c.dirY * cos(info->c.rotationSpeed);
+		oldPlaneX = info->c.planeX;
+		info->c.planeX = info->c.planeX * cos(info->c.rotationSpeed) - info->c.planeY * sin(info->c.rotationSpeed);
+		info->c.planeY = oldPlaneX * sin(info->c.rotationSpeed) + info->c.planeY * cos(info->c.rotationSpeed);
 	}
 	return (0);
 }
@@ -47,13 +47,13 @@ int	key_update(t_hub *info)
 int	key_release(int key, t_hub *info)
 {
 	if (key == KEY_W)
-		info->flag.key_w = 0;
+		info->k.w = 0;
 	if (key == KEY_S)
-		info->flag.key_s = 0;
+		info->k.s = 0;
 	if (key == KEY_A)
-		info->flag.key_a = 0;
+		info->k.a = 0;
 	if (key == KEY_D)
-		info->flag.key_d = 0;
+		info->k.d = 0;
 	return (0);
 }
 
@@ -61,14 +61,14 @@ int	key_release(int key, t_hub *info)
 int	key_press(int key, t_hub *info)
 {
 	if (key == KEY_W)
-		info->flag.key_w = 1;
+		info->k.w = 1;
 	if (key == KEY_S)
-		info->flag.key_s = 1;
+		info->k.s = 1;
 	if (key == KEY_D)
-		info->flag.key_d = 1;
+		info->k.d = 1;
 	if (key == KEY_A)
-		info->flag.key_a = 1;
+		info->k.a = 1;
 	if (key == KEY_ESC)
-		info->flag.key_esc = 1;
+		info->k.esc = 1;
 	return (0);
 }

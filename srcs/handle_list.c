@@ -1,22 +1,5 @@
 #include "cub3D.h"
 
-t_sprite_list	*find_start(t_sprite_list *cur) // 결과 확인용으로만 쓰고 나중에 지울 것
-{
-	while (cur->prev)
-		cur = cur->prev;
-	return (cur->next);
-}
-
-void	print_sprite_list(t_sprite_list *start) // 결과 확인용으로만 쓰고 나중에 지울 것
-{
-	while (start->next)
-	{
-		printf("x y dist : %.2f %.2f %.2f\n", start->x, start->y, start->distance);
-		start = start->next;
-	}
-	printf("x y dist : %.2f %.2f %.2f\n", start->x, start->y, start->distance);
-}
-
 static t_sprite_list	*last_sprite_node(t_sprite_list *node)
 {
 	while (node->next)
