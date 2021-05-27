@@ -6,7 +6,7 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:57 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/28 01:16:31 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 06:37:06 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static void	calc_inverse_matrix(t_info *info, t_draw_element *el)
 {
 	el->invdet = 1.0 / (info->c.plane_x * info->c.dir_y\
 	- info->c.dir_x * info->c.plane_y);
-	el->trans_x = el->invdet\
+	el->trans_x = (el->invdet)\
 	* (info->c.dir_y * el->sprt_x - info->c.dir_x * el->sprt_y);
-	el->trans_y = el->invdet\
+	el->trans_y = (el->invdet)\
 	* (-info->c.plane_y * el->sprt_x + info->c.plane_x * el->sprt_y);
 	el->scr_x = (int)((info->g->x_render_size / 2)\
 	* (1 + el->trans_x / el->trans_y));

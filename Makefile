@@ -18,7 +18,8 @@ OBJECTS =	srcs/main.o \
 	srcs/dda_util.o \
 	srcs/draw.o \
 	srcs/sprite.o \
-	srcs/key.o \
+	srcs/key_update.o \
+	srcs/key_hook.o \
 	srcs/handle_list.o \
 	srcs/bitmap.o \
 	srcs/map_efficiency.o \

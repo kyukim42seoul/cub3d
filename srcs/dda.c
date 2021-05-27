@@ -6,7 +6,7 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:28 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/28 01:15:32 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 05:59:30 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,14 @@ static void		set_side_merge_sidedist_deltadist(t_var *var)
 	}
 }
 
+static void		stopper(t_info *info, t_var var)
+{
+	if (var.perpwalldist < 0.1 && info->k.s == 0)
+		info->c.movspd *= var.perpwalldist;
+	else
+		info->c.movspd = 0.05;
+}
+
 int				dda(t_info *info)
 {
 	t_var	var;
@@ -80,6 +88,7 @@ int				dda(t_info *info)
 				var.hit = 1;
 		}
 		calc_perpwalldist_by_side_pos(info->c, &var);
+		stopper(info, var);
 		info->z[var.x] = var.perpwalldist;
 		calc_d_start_d_end_by_perpwalldist(info, &var);
 		set_texnum_by_side_raydir(&var);

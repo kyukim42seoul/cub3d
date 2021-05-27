@@ -6,7 +6,7 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 01:02:12 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/28 01:16:24 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 02:35:46 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,14 @@ static void	reset_sysinfo(t_info *info)
 	info->k.s = 0;
 	info->k.a = 0;
 	info->k.d = 0;
+	info->k.left = 0;
+	info->k.right = 0;
 	info->mlx = 0;
 	info->win = 0;
 	info->scrn_w = 0;
 	info->scrn_h = 0;
 	info->save = 0;
+	info->fd = 0;
 }
 
 static void	reset_mapinfo(t_info *info)

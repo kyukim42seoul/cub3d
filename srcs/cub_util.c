@@ -6,11 +6,23 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:07 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/28 01:15:25 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 06:17:16 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int		exit_door(void)
+{
+	exit(0);
+}
+
+void	error_function(char *msg)
+{
+	printf("Error\n");
+	printf("%s\n", msg);
+	exit(0);
+}
 
 void	free_by_count(char **source, int count)
 {
@@ -19,11 +31,15 @@ void	free_by_count(char **source, int count)
 	free(source);
 }
 
-void	error_function(char *msg)
+void	combine_color(int *color, int red, int green, int blue)
 {
-	printf("Error\n");
-	printf("%s\n", msg);
-	exit(0);
+	int	temp;
+
+	temp = 0;
+	temp |= red << 16;
+	temp |= green << 8;
+	temp |= blue;
+	*color = temp;
 }
 
 int		compare_text(char *source_line, char *text)
@@ -39,29 +55,4 @@ int		compare_text(char *source_line, char *text)
 			return (0);
 	}
 	return (1);
-}
-
-void	combine_color(int *color, int red, int green, int blue)
-{
-	int	temp;
-
-	temp = 0;
-	temp |= red << 16;
-	temp |= green << 8;
-	temp |= blue;
-	*color = temp;
-}
-
-void	free_texture_buf(t_info *info)
-{
-	int	y;
-
-	y = 0;
-	while (y < info->scrn_h)
-	{
-		free(info->texture[y]);
-		y++;
-	}
-	free(info->texture[y]);
-	free(info->texture);
 }

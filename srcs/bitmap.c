@@ -6,7 +6,7 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:18 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/28 01:15:15 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 02:04:18 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,9 @@ static	void	put_bmp_data(t_info *info, unsigned char *header)
 
 	fd = 0;
 	y = 0;
-	fd = open("test.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0755);
+	fd = open("screenshot.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0755);
+	if (fd < 0)
+		error_function("Fail Open create .bpm");
 	write(fd, header, 54);
 	info->img.addr = info->img.addr + info->scrn_h * info->img.size_line / 4;
 	while (y < info->scrn_h)
@@ -65,13 +67,13 @@ static	void	put_bmp_data(t_info *info, unsigned char *header)
 void			make_bitmap(char **argv, t_info *info)
 {
 	unsigned char	header[54];
-	int				fd;
 
-	fd = 0;
 	ft_bzero(header, 54);
+	info->fd = open(argv[1], O_RDONLY);
+	if (info->fd < 0)
+		error_function("Fail Open .cub");
+	start_parsing(info->fd, &info->map, info);
 	info->mlx = mlx_init();
-	fd = open(argv[1], O_RDONLY);
-	start_parsing(fd, &info->map, info);
 	check_render_size(info);
 	info->z = (double *)malloc(sizeof(double) * info->g->x_render_size);
 	set_texture_buf(info);

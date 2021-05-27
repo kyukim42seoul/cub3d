@@ -6,22 +6,27 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/28 00:32:45 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/28 01:10:27 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 06:30:06 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
+
 # define CUB3D_H
 # define KEY_W 13
-# define KEY_A 0
 # define KEY_S 1
+# define KEY_A 0
 # define KEY_D 2
+# define KEY_LEFT 123
+# define KEY_RIGHT 124
 # define KEY_ESC 53
 # define X_EVENT_KEY_PRESS 2
 # define X_EVENT_KEY_RELEASE 3
+# define X_EVENT_BUTTON_PRESS 4
 # define X_EVENT_KEY_EXIT 17
 # define TEXHEIGHT 64
 # define TEXWIDTH 64
+
 # include <math.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -66,6 +71,8 @@ typedef struct	s_key
 	int	s;
 	int	a;
 	int	d;
+	int	left;
+	int	right;
 	int	esc;
 }				t_key;
 
@@ -145,31 +152,40 @@ typedef struct	s_info
 	t_character		c;
 	void			*mlx;
 	void			*win;
+	int				fd;
 	int				scrn_w;
 	int				scrn_h;
 	char			**map;
 	int				**texture;
 	int				**buf;
 	double			*z;
-	int				number_of_sprite;
 	int				save;
+	int				number_of_sprite;
 	int				map_width;
 	int				map_height;
 }				t_info;
+
 /*
-**cub_util.c
+** cub_util.c
 */
+
+int				exit_door(void);
+void			error_function(char *msg);
 void			free_by_count(char **source, int count);
-void			set_texture_buf(t_info *info);
-void			set_screen_buf(t_info *info);
+void			combine_color(int *color, int red, int green, int blue);
+int				compare_text(char *source_line, char *text);
+
+/*
+**cub_util_2.c
+*/
+
 void			load_img(t_info *info, int *texture, char *path, t_image *img);
 void			load_texture(t_info *info);
-void			combine_color(int *color, int red, int green, int blue);
-void			error_function(char *msg);
-int				compare_text(char *source_line, char *text);
+void			set_texture_buf(t_info *info);
+void			set_screen_buf(t_info *info);
 void			check_render_size(t_info *info);
 /*
-**dda.c + 5 static
+**dda.c + 3 static
 */
 int				dda(t_info *info);
 /*
@@ -202,24 +218,26 @@ void			start_parsing(int fd, char ***map, t_info *info);
 /*
 **draw.c
 */
-void			draw_wall(t_info *info, t_var *var);
-void			draw_background(t_info *info, t_var *var);
 void			draw_image(t_info *info);
+void			draw_background(t_info *info, t_var *var);
+void			draw_wall(t_info *info, t_var *var);
 /*
-**sprite.c
+**sprite.c + 3 static
 */
-void			draw_sprite(t_info *info);
 void			set_sprite_distance(t_character c, t_sprite_list *node);
+void			draw_sprite(t_info *info);
 /*
-**key.c
+**key_update.c + 3 static
 */
 int				key_update(t_info *info);
+/*
+**key_hook.c
+*/
 int				key_press(int key, t_info *info);
 int				key_release(int key, t_info *info);
 /*
-**handle_list.c + 5 static
+**handle_list.c + 1 static
 */
-void			sort_sprite_node(t_sprite_list *start);
 void			add_node(t_sprite_list *list, t_sprite_list *new);
 t_sprite_list	*new_sprite_node(void);
 /*
@@ -227,20 +245,21 @@ t_sprite_list	*new_sprite_node(void);
 */
 void			make_bitmap(char **argv, t_info *info);
 /*
-**map_efficiency.c
+**map_efficiency.c + 2 static
 */
 void			check_boundary(t_info *info, char **map);
 /*
-**reset_info.c
+**reset_hub.c + 4 static
 */
 void			reset_info(t_info *info);
 /*
-**sort.c
+**sort.c + 2 static
 */
 int				scan_forward(t_sprite_list **start);
 int				scan_backward(t_sprite_list *head, t_sprite_list **tail);
+void			sort_sprite_node(t_sprite_list *start);
 /*
-**find_character.c
+**find_character.c + 4 static
 */
 void			find_character(int map_height, char *line, t_character *c);
 
