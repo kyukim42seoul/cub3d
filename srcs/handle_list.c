@@ -6,11 +6,11 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:35 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 17:41:35 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:15:44 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 static t_sprite_list	*last_sprite_node(t_sprite_list *node)
 {

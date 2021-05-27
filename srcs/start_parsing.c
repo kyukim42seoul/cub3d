@@ -6,11 +6,11 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:59 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 23:53:31 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:16:35 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 static int		complete_structure(t_graphic *g)
 {
@@ -36,7 +36,7 @@ static int		complete_structure(t_graphic *g)
 		return (1);
 }
 
-void			start_parsing(int fd, char ***map, t_hub *info)
+void			start_parsing(int fd, char ***map, t_info *info)
 {
 	int		count;
 	char	*line;

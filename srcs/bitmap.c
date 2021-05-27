@@ -6,13 +6,13 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:18 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 21:41:01 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:15:15 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
-static	void	bmp_file_header(t_hub *info, unsigned char *header)
+static	void	bmp_file_header(t_info *info, unsigned char *header)
 {
 	int	temp;
 
@@ -26,7 +26,7 @@ static	void	bmp_file_header(t_hub *info, unsigned char *header)
 	header[10] = 54;
 }
 
-static	void	bmp_info_header(t_hub *info, unsigned char *header)
+static	void	bmp_info_header(t_info *info, unsigned char *header)
 {
 	int	temp;
 
@@ -44,7 +44,7 @@ static	void	bmp_info_header(t_hub *info, unsigned char *header)
 	header[28] = 32;
 }
 
-static	void	put_bmp_data(t_hub *info, unsigned char *header)
+static	void	put_bmp_data(t_info *info, unsigned char *header)
 {
 	int	fd;
 	int	y;
@@ -62,7 +62,7 @@ static	void	put_bmp_data(t_hub *info, unsigned char *header)
 	}
 }
 
-void			make_bitmap(char **argv, t_hub *info)
+void			make_bitmap(char **argv, t_info *info)
 {
 	unsigned char	header[54];
 	int				fd;

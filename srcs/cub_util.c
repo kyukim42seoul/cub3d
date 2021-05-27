@@ -6,11 +6,11 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:07 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 21:15:16 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:15:25 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 void	free_by_count(char **source, int count)
 {
@@ -52,7 +52,7 @@ void	combine_color(int *color, int red, int green, int blue)
 	*color = temp;
 }
 
-void	free_texture_buf(t_hub *info)
+void	free_texture_buf(t_info *info)
 {
 	int	y;
 

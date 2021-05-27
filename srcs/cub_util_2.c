@@ -6,13 +6,13 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 20:38:45 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 22:35:07 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:15:19 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
-void	load_image(t_hub *info, int *texture, char *path, t_image *img)
+void	load_img(t_info *info, int *texture, char *path, t_image *img)
 {
 	int	x;
 	int	y;
@@ -38,24 +38,24 @@ void	load_image(t_hub *info, int *texture, char *path, t_image *img)
 	mlx_destroy_image(info->mlx, info->img.img);
 }
 
-void	load_texture(t_hub *info)
+void	load_texture(t_info *info)
 {
-	load_image(info, info->texture[0], info->g->north, &info->img);
-	load_image(info, info->texture[1], info->g->south, &info->img);
-	load_image(info, info->texture[2], info->g->west, &info->img);
-	load_image(info, info->texture[3], info->g->east, &info->img);
-	load_image(info, info->texture[4], info->g->pathsprite, &info->img);
+	load_img(info, info->texture[0], info->g->north, &info->img);
+	load_img(info, info->texture[1], info->g->south, &info->img);
+	load_img(info, info->texture[2], info->g->west, &info->img);
+	load_img(info, info->texture[3], info->g->east, &info->img);
+	load_img(info, info->texture[4], info->g->pathsprite, &info->img);
 }
 
-void	set_texture_buf(t_hub *info)
+void	set_texture_buf(t_info *info)
 {
 	int	num;
 	int	tex_h;
 	int	tex_w;
 
 	num = 0;
-	tex_h = texHeight;
-	tex_w = texWidth;
+	tex_h = TEXHEIGHT;
+	tex_w = TEXWIDTH;
 	info->texture = (int **)malloc(sizeof(int *) * 5);
 	if (!info->texture)
 		error_function("Fail Malloc set_texture_buf");
@@ -68,7 +68,7 @@ void	set_texture_buf(t_hub *info)
 	}
 }
 
-void	set_screen_buf(t_hub *info)
+void	set_screen_buf(t_info *info)
 {
 	int	y;
 
@@ -85,7 +85,7 @@ void	set_screen_buf(t_hub *info)
 	}
 }
 
-void	check_render_size(t_hub *info)
+void	check_render_size(t_info *info)
 {
 	mlx_get_screen_size(info->mlx, &info->scrn_w, &info->scrn_h);
 	if (info->g->x_render_size == 0 || info->g->y_render_size == 0)

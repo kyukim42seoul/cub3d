@@ -6,11 +6,11 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:45 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 21:50:25 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:16:18 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 static int	cub_atoi(char *source)
 {

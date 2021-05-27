@@ -6,11 +6,11 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:42:13 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 17:38:54 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:16:28 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 static	int				compare(t_sprite_list *left, t_sprite_list *right)
 {

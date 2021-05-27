@@ -6,13 +6,13 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:43 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 20:38:04 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:16:13 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
-static int		check_y(t_hub *info, char **map, int y, int x)
+static int		check_y(t_info *info, char **map, int y, int x)
 {
 	if (y != 0 && map[y - 1][x] != ' ' && map[y - 1][x] != '1')
 		return (1);
@@ -23,7 +23,7 @@ static int		check_y(t_hub *info, char **map, int y, int x)
 		return (0);
 }
 
-static int		check_cross(t_hub *info, char **map, int y, int x)
+static int		check_cross(t_info *info, char **map, int y, int x)
 {
 	int	check;
 
@@ -37,7 +37,7 @@ static int		check_cross(t_hub *info, char **map, int y, int x)
 	return (check);
 }
 
-void			check_boundary(t_hub *info, char **map)
+void			check_boundary(t_info *info, char **map)
 {
 	int	check;
 	int	y;

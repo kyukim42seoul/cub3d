@@ -6,56 +6,56 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 17:11:45 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 22:53:20 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:15:40 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 static void	its_north(int map_h, int index, char *line, t_character *c)
 {
-	c->posX = (double)index + 0.5;
-	c->posY = (double)map_h + 0.5;
-	c->dirX = 0;
-	c->dirY = -1;
-	c->planeX = 0.66;
-	c->planeY = 0;
+	c->pos_x = (double)index + 0.5;
+	c->pos_y = (double)map_h + 0.5;
+	c->dir_x = 0;
+	c->dir_y = -1;
+	c->plane_x = 0.66;
+	c->plane_y = 0;
 	*line = '0';
 	c->cnt++;
 }
 
 static void	its_south(int map_h, int index, char *line, t_character *c)
 {
-	c->posX = (double)index + 0.5;
-	c->posY = (double)map_h + 0.5;
-	c->dirX = 0;
-	c->dirY = 1;
-	c->planeX = -0.66;
-	c->planeY = 0;
+	c->pos_x = (double)index + 0.5;
+	c->pos_y = (double)map_h + 0.5;
+	c->dir_x = 0;
+	c->dir_y = 1;
+	c->plane_x = -0.66;
+	c->plane_y = 0;
 	*line = '0';
 	c->cnt++;
 }
 
 static void	its_west(int map_h, int index, char *line, t_character *c)
 {
-	c->posX = (double)index + 0.5;
-	c->posY = (double)map_h + 0.5;
-	c->dirX = -1;
-	c->dirY = 0;
-	c->planeX = 0;
-	c->planeY = -0.66;
+	c->pos_x = (double)index + 0.5;
+	c->pos_y = (double)map_h + 0.5;
+	c->dir_x = -1;
+	c->dir_y = 0;
+	c->plane_x = 0;
+	c->plane_y = -0.66;
 	*line = '0';
 	c->cnt++;
 }
 
 static void	its_east(int map_h, int index, char *line, t_character *c)
 {
-	c->posX = (double)index + 0.5;
-	c->posY = (double)map_h + 0.5;
-	c->dirX = 1;
-	c->dirY = 0;
-	c->planeX = 0;
-	c->planeY = 0.66;
+	c->pos_x = (double)index + 0.5;
+	c->pos_y = (double)map_h + 0.5;
+	c->dir_x = 1;
+	c->dir_y = 0;
+	c->plane_x = 0;
+	c->plane_y = 0.66;
 	*line = '0';
 	c->cnt++;
 }

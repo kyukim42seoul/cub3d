@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/27 14:32:53 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 23:46:23 by kyukim           ###   ########.fr       */
+/*   Created: 2021/05/28 01:02:12 by kyukim            #+#    #+#             */
+/*   Updated: 2021/05/28 01:16:24 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
 static void	reset_graphic(t_graphic **g)
 {
@@ -30,17 +30,17 @@ static void	reset_graphic(t_graphic **g)
 
 static void	reset_character(t_character *c)
 {
-	c->posX = 0;
-	c->posY = 0;
-	c->dirX = 0;
-	c->dirY = 0;
-	c->planeX = 0;
-	c->planeY = 0;
+	c->pos_x = 0;
+	c->pos_y = 0;
+	c->dir_x = 0;
+	c->dir_y = 0;
+	c->plane_x = 0;
+	c->plane_y = 0;
 	c->movspd = 0.05;
 	c->rotspd = 0.05;
 }
 
-static void	reset_sysinfo(t_hub *info)
+static void	reset_sysinfo(t_info *info)
 {
 	info->img.img = 0;
 	info->img.addr = 0;
@@ -60,7 +60,7 @@ static void	reset_sysinfo(t_hub *info)
 	info->save = 0;
 }
 
-static void	reset_mapinfo(t_hub *info)
+static void	reset_mapinfo(t_info *info)
 {
 	info->map = 0;
 	info->map_width = 0;
@@ -69,7 +69,7 @@ static void	reset_mapinfo(t_hub *info)
 	info->sprite_list = NULL;
 }
 
-void		reset_hub(t_hub *info)
+void		reset_info(t_info *info)
 {
 	reset_sysinfo(info);
 	reset_graphic(&info->g);

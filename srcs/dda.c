@@ -6,65 +6,65 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:28 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 21:15:26 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:15:32 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
-static void		set_default_var(t_hub *info, t_var *var)
+static void		set_default_var(t_info *info, t_var *var)
 {
-	var->cameraX = 2 * var->x / (double)info->scrn_w - 1;
-	var->rayDirX = info->c.dirX + info->c.planeX * var->cameraX;
-	var->rayDirY = info->c.dirY + info->c.planeY * var->cameraX;
-	var->mapX = (int)info->c.posX;
-	var->mapY = (int)info->c.posY;
-	var->deltaDistX = fabs(1 / var->rayDirX);
-	var->deltaDistY = fabs(1 / var->rayDirY);
+	var->camera_x = 2 * var->x / (double)info->scrn_w - 1;
+	var->raydir_x = info->c.dir_x + info->c.plane_x * var->camera_x;
+	var->raydir_y = info->c.dir_y + info->c.plane_y * var->camera_x;
+	var->map_x = (int)info->c.pos_x;
+	var->map_y = (int)info->c.pos_y;
+	var->deltadist_x = fabs(1 / var->raydir_x);
+	var->deltadist_y = fabs(1 / var->raydir_y);
 	var->hit = 0;
 }
 
 static	void	stepx_sidedist_by_raydir(t_character c, t_var *var)
 {
-	if (var->rayDirX < 0)
+	if (var->raydir_x < 0)
 	{
-		var->stepX = -1;
-		var->sideDistX = (c.posX - var->mapX) * var->deltaDistX;
+		var->step_x = -1;
+		var->sidedist_x = (c.pos_x - var->map_x) * var->deltadist_x;
 	}
 	else
 	{
-		var->stepX = 1;
-		var->sideDistX = (var->mapX + 1 - c.posX) * var->deltaDistX;
+		var->step_x = 1;
+		var->sidedist_x = (var->map_x + 1 - c.pos_x) * var->deltadist_x;
 	}
-	if (var->rayDirY < 0)
+	if (var->raydir_y < 0)
 	{
-		var->stepY = -1;
-		var->sideDistY = (c.posY - var->mapY) * var->deltaDistY;
+		var->step_y = -1;
+		var->sidedist_y = (c.pos_y - var->map_y) * var->deltadist_y;
 	}
 	else
 	{
-		var->stepY = 1;
-		var->sideDistY = (var->mapY + 1 - c.posY) * var->deltaDistY;
+		var->step_y = 1;
+		var->sidedist_y = (var->map_y + 1 - c.pos_y) * var->deltadist_y;
 	}
 }
 
 static void		set_side_merge_sidedist_deltadist(t_var *var)
 {
-	if (var->sideDistX < var->sideDistY)
+	if (var->sidedist_x < var->sidedist_y)
 	{
-		var->sideDistX += var->deltaDistX;
-		var->mapX += var->stepX;
+		var->sidedist_x += var->deltadist_x;
+		var->map_x += var->step_x;
 		var->side = 0;
 	}
 	else
 	{
-		var->sideDistY += var->deltaDistY;
-		var->mapY += var->stepY;
+		var->sidedist_y += var->deltadist_y;
+		var->map_y += var->step_y;
 		var->side = 1;
 	}
 }
 
-int				dda(t_hub *info)
+int				dda(t_info *info)
 {
 	t_var	var;
 
@@ -76,12 +76,12 @@ int				dda(t_hub *info)
 		while (var.hit == 0)
 		{
 			set_side_merge_sidedist_deltadist(&var);
-			if (info->map[var.mapY][var.mapX] == '1')
+			if (info->map[var.map_y][var.map_x] == '1')
 				var.hit = 1;
 		}
 		calc_perpwalldist_by_side_pos(info->c, &var);
-		info->z[var.x] = var.perpWallDist;
-		calc_drawstart_drawend_by_perpwalldist(info, &var);
+		info->z[var.x] = var.perpwalldist;
+		calc_d_start_d_end_by_perpwalldist(info, &var);
 		set_texnum_by_side_raydir(&var);
 		calc_texx_by_side_raydir(&var);
 		calc_wallx_by_side(info, &var);

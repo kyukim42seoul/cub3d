@@ -6,13 +6,13 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:49 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 23:53:49 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:16:21 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
-static void		find_sprite(t_hub *info, char *line, int map_height)
+static void		find_sprite(t_info *info, char *line, int map_height)
 {
 	int				index;
 	t_sprite_list	*new;
@@ -27,8 +27,8 @@ static void		find_sprite(t_hub *info, char *line, int map_height)
 			new = new_sprite_node();
 			new->x = index + 0.5;
 			new->y = map_height + 0.5;
-			new->distance = (info->c.posX - new->x) * (info->c.posX - new->x)\
-			+ (info->c.posY - new->y) * (info->c.posY - new->y);
+			new->distance = (info->c.pos_x - new->x) * (info->c.pos_x - new->x)\
+			+ (info->c.pos_y - new->y) * (info->c.pos_y - new->y);
 			add_node(info->sprite_list, new);
 			info->number_of_sprite++;
 		}
@@ -48,7 +48,7 @@ static char		*line_initialize(int len)
 	return (new_line);
 }
 
-static void		take_map_on_list(int fd, t_hub *info, t_list *head)
+static void		take_map_on_list(int fd, t_info *info, t_list *head)
 {
 	char	*buf;
 	char	*line;
@@ -87,7 +87,7 @@ int				check_char(char c, char *vaild)
 	return (0);
 }
 
-void			parse_map(int fd, char ***map, t_hub *info)
+void			parse_map(int fd, char ***map, t_info *info)
 {
 	int		index;
 	t_list	*head;

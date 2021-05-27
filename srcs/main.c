@@ -6,13 +6,13 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:40 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 23:35:28 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:16:08 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
-int				main_loop(t_hub *info)
+int				main_loop(t_info *info)
 {
 	key_update(info);
 	dda(info);
@@ -25,7 +25,7 @@ int				main_loop(t_hub *info)
 	return (0);
 }
 
-static	int		check_arguments(t_hub *info, int argc, char **argv)
+static	int		check_arguments(t_info *info, int argc, char **argv)
 {
 	char	*extension;
 
@@ -39,7 +39,7 @@ static	int		check_arguments(t_hub *info, int argc, char **argv)
 	return (info->save);
 }
 
-static void		basic_process(t_hub info, char **argv)
+static void		basic_process(t_info info, char **argv)
 {
 	int	fd;
 
@@ -65,9 +65,9 @@ static void		basic_process(t_hub info, char **argv)
 
 int				main(int argc, char *argv[])
 {
-	t_hub		info;
+	t_info		info;
 
-	reset_hub(&info);
+	reset_info(&info);
 	if (argc < 2 || argc > 3)
 		return (0);
 	if (check_arguments(&info, argc, argv))

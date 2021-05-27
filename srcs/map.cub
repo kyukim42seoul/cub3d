@@ -1,0 +1,28 @@
+R 800 600
+S ./srcs/textures/sprite_1.xpm
+NO ./srcs/textures/wall_n.xpm
+SO ./srcs/textures/wall_s.xpm
+EA ./srcs/textures/wall_e.xpm
+WE ./srcs/textures/wall_w.xpm
+F 139,99,49
+C 60,194,255
+
+    1111111111111
+    1000000000001
+    1000000011111
+111110S000001
+10010000022201
+1001000002201
+10010000022201
+1111111111111
+
+
+
+
+
+
+11111111
+10000201
+10000001
+11111111
+

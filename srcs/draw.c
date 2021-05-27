@@ -6,13 +6,13 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:32 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/27 21:20:57 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 01:15:36 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3D.h"
+#include "cub3d.h"
 
-void	draw_image(t_hub *info)
+void	draw_image(t_info *info)
 {
 	int	y;
 	int	x;
@@ -32,7 +32,7 @@ void	draw_image(t_hub *info)
 		mlx_put_image_to_window(info->mlx, info->win, info->img.img, 0, 0);
 }
 
-void	draw_background(t_hub *info, t_var *var)
+void	draw_background(t_info *info, t_var *var)
 {
 	int	eyesight;
 	int	y;
@@ -51,16 +51,16 @@ void	draw_background(t_hub *info, t_var *var)
 	}
 }
 
-void	draw_wall(t_hub *info, t_var *var)
+void	draw_wall(t_info *info, t_var *var)
 {
-	var->y = var->drawStart;
-	if (var->drawStart < 0)
+	var->y = var->drawstart;
+	if (var->drawstart < 0)
 		var->y = 0;
-	while (var->y < var->drawEnd)
+	while (var->y < var->drawend)
 	{
-		var->texY = (double)(var->y - var->drawStart) / var->lineHeight * 63;
-		var->color = info->texture[var->texNum]\
-		[texWidth * var->texY + var->texX];
+		var->tex_y = (double)(var->y - var->drawstart) / var->line_h * 63;
+		var->color = info->texture[var->texnum]\
+		[TEXWIDTH * var->tex_y + var->tex_x];
 		if (var->side == 1)
 			var->color = (var->color >> 1) & 8355711;
 		info->buf[var->y][var->x] = var->color;
