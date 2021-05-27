@@ -1,6 +1,6 @@
 NAME = cub3D
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror $(DEBUGF) -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 DEBUGF = -g3
 MLX = -L . -lmlx
 GNL = srcs/Get_Next_Line/gnl.a
@@ -9,10 +9,13 @@ FRAMEWORKS = -framework OpenGl -framework AppKit
 
 OBJECTS =	srcs/main.o \
 	srcs/parse_graphic.o \
-	srcs/parse_map.o \
 	srcs/start_parsing.o \
+	srcs/parse_map.o \
+	srcs/find_character.o \
 	srcs/cub_util.o \
+	srcs/cub_util_2.o \
 	srcs/dda.o \
+	srcs/dda_util.o \
 	srcs/draw.o \
 	srcs/sprite.o \
 	srcs/key.o \
@@ -20,6 +23,7 @@ OBJECTS =	srcs/main.o \
 	srcs/bitmap.o \
 	srcs/map_efficiency.o \
 	srcs/reset_hub.o \
+	srcs/sort.o \
 
 all : gnl libft mlx $(NAME)
 

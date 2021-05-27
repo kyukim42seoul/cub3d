@@ -1,16 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start_parsing.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 14:32:59 by kyukim            #+#    #+#             */
+/*   Updated: 2021/05/27 23:53:31 by kyukim           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
-static int	complete_structure(t_graphic *g)
+static int		complete_structure(t_graphic *g)
 {
-	if (!g->path_to_the_north_texture)
+	if (!g->north)
 		return (0);
-	else if (!g->path_to_the_south_texture)
+	else if (!g->south)
 		return (0);
-	else if (!g->path_to_the_west_texture)
+	else if (!g->west)
 		return (0);
-	else if (!g->path_to_the_east_texture)
+	else if (!g->east)
 		return (0);
-	else if (!g->path_to_the_sprite_texture)
+	else if (!g->pathsprite)
 		return (0);
 	else if (!g->x_render_size)
 		return (0);
@@ -24,22 +36,26 @@ static int	complete_structure(t_graphic *g)
 		return (1);
 }
 
-void	start_parsing(int fd, char ***map, t_hub *info)
+void			start_parsing(int fd, char ***map, t_hub *info)
 {
-	int	count;
+	int		count;
 	char	*line;
 
 	count = 0;
 	while (!complete_structure(info->g))
 	{
 		get_next_line(fd, &line);
+		if (!line)
+			error_function("Fail get_next_line");
 		if (*line != '\0')
 		{
-			parse_cub(line, info->g); //ok free by counts 갯수와 인덱스를 보니 잘 free 되는 것 같음
+			parse_cub(line, info->g);
 			free(line);
 		}
 		else
 			free(line);
 	}
 	parse_map(fd, map, info);
+	if (info->number_of_sprite == 0)
+		error_function("Invaild Map No Sprite");
 }

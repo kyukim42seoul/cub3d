@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bitmap.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 14:32:18 by kyukim            #+#    #+#             */
+/*   Updated: 2021/05/27 21:41:01 by kyukim           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 static	void	bmp_file_header(t_hub *info, unsigned char *header)
 {
 	int	temp;
 
-	temp = 54 + info->screenheight * info->screenwidth * 4;
+	temp = 54 + info->scrn_h * info->scrn_w * 4;
 	header[0] = 'B';
 	header[1] = 'M';
 	header[2] = (unsigned char)temp;
@@ -18,12 +30,12 @@ static	void	bmp_info_header(t_hub *info, unsigned char *header)
 {
 	int	temp;
 
-	temp = info->screenheight;
+	temp = info->scrn_h;
 	header[14] = 40;
-	header[18] = (unsigned char)(info->screenwidth);
-	header[19] = (unsigned char)(info->screenwidth >> 8);
-	header[20] = (unsigned char)(info->screenwidth >> 16);
-	header[21] = (unsigned char)(info->screenwidth >> 24);
+	header[18] = (unsigned char)(info->scrn_w);
+	header[19] = (unsigned char)(info->scrn_w >> 8);
+	header[20] = (unsigned char)(info->scrn_w >> 16);
+	header[21] = (unsigned char)(info->scrn_w >> 24);
 	header[22] = (unsigned char)(temp);
 	header[23] = (unsigned char)(temp >> 8);
 	header[24] = (unsigned char)(temp >> 16);
@@ -41,16 +53,16 @@ static	void	put_bmp_data(t_hub *info, unsigned char *header)
 	y = 0;
 	fd = open("test.bmp", O_CREAT | O_WRONLY | O_TRUNC, 0755);
 	write(fd, header, 54);
-	info->img.addr = info->img.addr + info->screenheight * info->img.size_line / 4;
-	while (y < info->screenheight)
+	info->img.addr = info->img.addr + info->scrn_h * info->img.size_line / 4;
+	while (y < info->scrn_h)
 	{
 		info->img.addr -= info->img.size_line / 4;
-		write(fd, info->img.addr, (info->screenwidth * 4));
+		write(fd, info->img.addr, (info->scrn_w * 4));
 		y++;
 	}
 }
 
-void	make_bitmap(char **argv, t_hub *info)
+void			make_bitmap(char **argv, t_hub *info)
 {
 	unsigned char	header[54];
 	int				fd;
@@ -60,15 +72,14 @@ void	make_bitmap(char **argv, t_hub *info)
 	info->mlx = mlx_init();
 	fd = open(argv[1], O_RDONLY);
 	start_parsing(fd, &info->map, info);
-	info->screenwidth = info->g->x_render_size;
-	info->screenheight = info->g->y_render_size;
+	check_render_size(info);
 	info->z = (double *)malloc(sizeof(double) * info->g->x_render_size);
 	set_texture_buf(info);
 	set_screen_buf(info);
 	load_texture(info);
-	info->win = mlx_new_window(info->mlx, info->g->x_render_size, info->g->y_render_size, "test");
-	info->img.img = mlx_new_image(info->mlx, info->screenwidth, info->screenheight);
-	info->img.addr = (int *)mlx_get_data_addr(info->img.img, &info->img.bits_per_pixel, &info->img.size_line, &info->img.endian);
+	info->img.img = mlx_new_image(info->mlx, info->scrn_w, info->scrn_h);
+	info->img.addr = (int *)mlx_get_data_addr(info->img.img,\
+	&info->img.bits_per_pixel, &info->img.size_line, &info->img.endian);
 	dda(info);
 	set_sprite_distance(info->c, info->sprite_list->next);
 	sort_sprite_node(info->sprite_list->next);

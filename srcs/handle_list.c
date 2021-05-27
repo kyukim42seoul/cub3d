@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_list.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 14:32:35 by kyukim            #+#    #+#             */
+/*   Updated: 2021/05/27 17:41:35 by kyukim           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
 static t_sprite_list	*last_sprite_node(t_sprite_list *node)
@@ -7,84 +19,14 @@ static t_sprite_list	*last_sprite_node(t_sprite_list *node)
 	return (node);
 }
 
-static	int	compare(t_sprite_list *left, t_sprite_list *right)
-{
-	if (!left || !right)
-		return (0);
-	if (left->distance < right->distance)
-		return (1);
-	else
-		return (0);
-}
-
-static t_sprite_list	*swap(t_sprite_list *left, t_sprite_list *right)
-{
-	left->next = right->next;
-	if (right->next)
-		right->next->prev = left;
-	right->next = left;
-	right->prev = left->prev;
-	left->prev->next = right;
-	left->prev = right;
-	return (right);
-}
-
-static int	scan_forward(t_sprite_list **start)
-{
-	int	check;
-
-	check = 0;
-	while ((*start)->next)
-	{
-		if (compare(*start, (*start)->next))
-		{
-			*start = swap(*start, (*start)->next);
-			check++;
-		}
-		*start = (*start)->next;
-	}
-	return (check);
-}
-
-static int	scan_backward(t_sprite_list *head, t_sprite_list **tail)
-{
-	int	check;
-
-	check = 0;
-	while ((*tail)->prev != head)
-	{
-		if (compare((*tail)->prev, *tail))
-		{
-			*tail = swap((*tail)->prev, *tail)->next;
-			check++;
-		}
-		*tail = (*tail)->prev;
-	}
-	return (check);
-}
-
-void	sort_sprite_node(t_sprite_list *start)
-{
-	int	compare_count;
-	t_sprite_list	*head;
-
-	compare_count = -1;
-	head = start->prev;
-	while (compare_count != 0)
-	{
-		compare_count = scan_forward(&start);
-		compare_count = scan_backward(head, &start);
-	}
-}
-
-void	add_back_sprite_node(t_sprite_list *list, t_sprite_list *new)
+void					add_node(t_sprite_list *list, t_sprite_list *new)
 {
 	list = last_sprite_node(list);
 	list->next = new;
-	new ->prev = list;
+	new->prev = list;
 }
 
-t_sprite_list	*new_sprite_node(void)
+t_sprite_list			*new_sprite_node(void)
 {
 	t_sprite_list	*new;
 

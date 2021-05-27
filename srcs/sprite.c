@@ -1,72 +1,96 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sprite.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/05/27 14:32:57 by kyukim            #+#    #+#             */
+/*   Updated: 2021/05/27 21:18:43 by kyukim           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3D.h"
 
-void	draw_sprite(t_hub *info)
+static void	calc_inverse_matrix(t_hub *info, t_draw_element *el)
 {
-	int		sprite_screenX;
-	int		sprite_height;
-	int		draw_startY;
-	int		draw_endY;
-	int		draw_startX;
-	int		draw_endX;
-	int		sprite_width;
-	int		stripe;
-	int		texX;
-	int		texY;
-	int		y;
-	int		d;
-	int		color;
-	double	spriteX;
-	double	spriteY;
-	double	invdet;
-	double	transformX;
-	double	transformY;
+	el->invdet = 1.0 / (info->c.planeX * info->c.dirY\
+	- info->c.dirX * info->c.planeY);
+	el->trans_x = el->invdet\
+	* (info->c.dirY * el->sprt_x - info->c.dirX * el->sprt_y);
+	el->trans_Y = el->invdet\
+	* (-info->c.planeY * el->sprt_x + info->c.planeX * el->sprt_y);
+	el->scr_x = (int)((info->g->x_render_size / 2)\
+	* (1 + el->trans_x / el->trans_Y));
+}
+
+static void	set_elements(t_hub *info, t_sprite_list *start, t_draw_element *el)
+{
+	el->sprt_x = start->x - info->c.posX;
+	el->sprt_y = start->y - info->c.posY;
+	calc_inverse_matrix(info, el);
+	el->sprt_h = abs((int)(info->g->y_render_size / el->trans_Y));
+	el->start_y = -el->sprt_h / 2 + info->g->y_render_size / 2;
+	if (el->start_y < 0)
+		el->start_y = 0;
+	el->end_y = el->sprt_h / 2 + info->g->y_render_size / 2;
+	if (el->end_y >= info->g->y_render_size)
+		el->end_y = info->g->y_render_size - 1;
+	el->sprt_width = abs((int)(info->g->y_render_size / el->trans_Y));
+	el->start_x = -el->sprt_width / 2 + el->scr_x;
+	if (el->start_x < 0)
+		el->start_x = 0;
+	el->end_x = el->sprt_width / 2 + el->scr_x;
+	if (el->end_x >= info->g->x_render_size)
+		el->end_x = info->g->x_render_size - 1;
+	el->x = el->start_x;
+}
+
+static void	project_sprite(t_hub *info, t_draw_element *el)
+{
+	while (el->x < el->end_x)
+	{
+		el->texX = (int)(256 * (el->x - (-el->sprt_width / 2 + el->scr_x))\
+		* texWidth / el->sprt_width) / 256;
+		if (el->trans_Y > 0 && el->x > 0 && el->x < info->g->x_render_size\
+		&& el->trans_Y < info->z[el->x])
+		{
+			el->y = el->start_y;
+			while (el->y < el->end_y)
+			{
+				el->d = el->y * 256 - info->g->y_render_size * 128\
+				+ el->sprt_h * 128;
+				el->texY = ((el->d * texHeight) / el->sprt_h) / 256;
+				el->color = info->texture[4][el->texY * texWidth + el->texX];
+				if ((el->color & 0x00FFFFFF) != 0)
+					info->buf[el->y][el->x] = el->color;
+				el->y++;
+			}
+		}
+		el->x++;
+	}
+}
+
+void		set_sprite_distance(t_character c, t_sprite_list *node)
+{
+	while (node)
+	{
+		node->distance = (c.posX - node->x) * (c.posX - node->x)\
+		+ (c.posY - node->y) * (c.posY - node->y);
+		node = node->next;
+	}
+}
+
+void		draw_sprite(t_hub *info)
+{
+	t_draw_element	el;
 	t_sprite_list	*start;
 
 	start = info->sprite_list->next;
 	while (start)
 	{
-		spriteX = start->x - info->c.posX;
-		spriteY = start->y - info->c.posY;
-		invdet = 1.0 / (info->c.planeX * info->c.dirY - info->c.dirX * info->c.planeY);
-		transformX = invdet * (info->c.dirY * spriteX - info->c.dirX * spriteY);
-		transformY = invdet * (-info->c.planeY * spriteX  + info->c.planeX * spriteY);
-		sprite_screenX = (int)((info->g->x_render_size / 2) * (1 + transformX / transformY));
-		sprite_height = abs((int)(info->g->y_render_size / transformY)); //transformY 에 왜 괄호가 있을까? 구현 후 확인.
-		draw_startY = -sprite_height / 2 + info->g->y_render_size / 2;
-		if (draw_startY < 0)
-			draw_startY = 0;
-		draw_endY = sprite_height / 2 + info->g->y_render_size / 2;
-		if (draw_endY >= info->g->y_render_size)
-			draw_endY = info->g->y_render_size - 1;
-
-		sprite_width = abs((int)(info->g->y_render_size / transformY));
-		draw_startX = -sprite_width / 2 + sprite_screenX;
-		if (draw_startX < 0)
-			draw_startX = 0;
-		draw_endX = sprite_width / 2 + sprite_screenX;
-		if (draw_endX >= info->g->x_render_size)
-			draw_endX = info->g->x_render_size - 1;
-
-		stripe = draw_startX;
-//-------------------------------------------------------up : set_var | down : draw_stripe
-		while (stripe < draw_endX)
-		{
-			texX = (int)(256 * (stripe - (-sprite_width / 2 + sprite_screenX)) * texWidth / sprite_width) / 256;
-			if (transformY > 0 && stripe > 0 && stripe < info->g->x_render_size && transformY < info->z[stripe])
-			{
-				y = draw_startY;
-				while (y < draw_endY)
-				{
-					d = y * 256 - info->g->y_render_size * 128 + sprite_height * 128; //256, 128 factors to avoid floats(??)
-					texY = ((d * texHeight) / sprite_height) / 256;
-					color = info->texture[4][texY * texWidth + texX];
-					if ((color & 0x00FFFFFF) != 0)
-						info->buf[y][stripe] = color;
-					y++;
-				}
-			}
-			stripe++;
-		}
+		set_elements(info, start, &el);
+		project_sprite(info, &el);
 		start = start->next;
 	}
 }
