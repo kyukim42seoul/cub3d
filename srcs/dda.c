@@ -6,7 +6,7 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:28 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/28 05:59:30 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/28 09:21:38 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,13 @@ static void		set_side_merge_sidedist_deltadist(t_var *var)
 
 static void		stopper(t_info *info, t_var var)
 {
-	if (var.perpwalldist < 0.1 && info->k.s == 0)
-		info->c.movspd *= var.perpwalldist;
+	if (info->c.dir_x == 0 || info->c.dir_y == 0)
+	{
+		if (var.perpwalldist < 0.1 && info->k.s == 0)
+			info->c.movspd *= var.perpwalldist;
+		else
+			info->c.movspd = 0.05;
+	}
 	else
 		info->c.movspd = 0.05;
 }
