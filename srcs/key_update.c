@@ -6,7 +6,7 @@
 /*   By: kyukim <kyukim@student.42seoul.kr>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/27 14:32:37 by kyukim            #+#    #+#             */
-/*   Updated: 2021/05/31 13:11:17 by kyukim           ###   ########.fr       */
+/*   Updated: 2021/05/31 13:23:27 by kyukim           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int			key_update(t_info *info)
 
 	olddir_x = 0;
 	oldplane_x = 0;
-	if ((info->k.a == 1) || info->k.d == 1)
+	if ((info->k.left == 1) || info->k.right == 1)
 	{
 		olddir_x = info->c.dir_x;
 		oldplane_x = info->c.plane_x;
