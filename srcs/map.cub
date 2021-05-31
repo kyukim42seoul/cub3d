@@ -1,10 +1,9 @@
-WE ./srcs/textures/wall_w.xpm
-R 800 600
-S ./srcs/textures/sprite_1.xpm
+R 500 500
 NO ./srcs/textures/wall_n.xpm
+WE ./srcs/textures/wall_w.xpm
+S ./srcs/textures/sprite_1.xpm
 SO ./srcs/textures/wall_s.xpm
 EA ./srcs/textures/wall_e.xpm
-
 F 139,99,49
 C 60,194,255
 
